@@ -6,21 +6,54 @@
 <meta name="theme-color" content="#0a1628">
 <title>UTuner</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0a1628;--surface:#111d35;--surface2:#16243d;
   --border:#1e2e4a;--border2:#253551;
-  --accent:#4ade80;--amber:#f59e0b;
+  --accent:#3b82f6;--amber:#f59e0b;
   --text:#e2e8f0;--text2:#7d93b2;--text3:#3d5278;
   --safe-top:env(safe-area-inset-top,0px);
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
+
+/* TEMA: Kömür — saf siyah, sarı vurgu */
+body.theme-komur{
+  --bg:#0a0a0a;--surface:#161616;--surface2:#1f1f1f;
+  --border:#2a2a2a;--border2:#3a3a3a;
+  --accent:#facc15;--amber:#fb923c;
+  --text:#f5f5f5;--text2:#a3a3a3;--text3:#525252;
+}
+
+/* TEMA: Krem — açık kağıt, kahverengi/yeşil */
+body.theme-krem{
+  --bg:#f5e9d3;--surface:#ebdcc1;--surface2:#e0cda8;
+  --border:#c8b48f;--border2:#a8927a;
+  --accent:#15803d;--amber:#a04b2a;
+  --text:#3a2a1a;--text2:#7a6a55;--text3:#9c8a72;
+}
+
+/* TEMA: Mor Neon — koyu mor, neon pembe */
+body.theme-morNeon{
+  --bg:#1a0c2e;--surface:#241338;--surface2:#2e1a47;
+  --border:#3a1c5a;--border2:#4a2c6a;
+  --accent:#f0abfc;--amber:#c026d3;
+  --text:#f3e8ff;--text2:#c084fc;--text3:#7e22ce;
+}
+
+/* TEMA: Orman — koyu yeşil, altın */
+body.theme-orman{
+  --bg:#0d1f15;--surface:#152b1f;--surface2:#1e3a2a;
+  --border:#234a35;--border2:#2a5a40;
+  --accent:#fbbf24;--amber:#f97316;
+  --text:#dcfce7;--text2:#86efac;--text3:#4ade80;
+}
+
 html{font-size:16px;-webkit-text-size-adjust:100%}
 body{
   background:var(--bg);color:var(--text);
-  font-family:'Syne',sans-serif;
+  font-family:'Inter',sans-serif;
   min-height:100dvh;display:flex;flex-direction:column;
   overflow:hidden;
   padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);
@@ -39,7 +72,7 @@ body{
   font-size:10px;font-weight:700;letter-spacing:.8px;
   color:var(--text3);cursor:pointer;text-align:center;
   transition:all .2s;border:none;background:transparent;
-  font-family:'Syne',sans-serif;-webkit-tap-highlight-color:transparent;
+  font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent;
 }
 .mode-tab.active{background:var(--surface);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.4)}
 
@@ -52,17 +85,17 @@ body{
 }
 .note-card.in-tune{border-color:rgba(74,222,128,.35);box-shadow:0 0 24px rgba(74,222,128,.08)}
 .note-display{display:flex;align-items:flex-end;gap:6px}
-.note-letter{font-size:64px;font-weight:600;line-height:1;color:var(--text);letter-spacing:-1px;transition:color .3s;font-family:'DM Mono',monospace;}
-.note-card.in-tune .note-letter{color:var(--accent)}
-.note-octave{font-size:22px;font-weight:400;color:var(--text3);padding-bottom:8px;transition:color .3s;font-family:'DM Mono',monospace;}
+.note-letter{font-size:64px;font-weight:600;line-height:1;color:var(--text);letter-spacing:-1px;transition:color .3s;font-family:'Inter',sans-serif;}
+.note-card.in-tune .note-letter{color:#4ade80}
+.note-octave{font-size:22px;font-weight:400;color:var(--text3);padding-bottom:8px;transition:color .3s;font-family:'Inter',sans-serif;}
 .note-card.in-tune .note-octave{color:rgba(74,222,128,.6)}
 .note-info{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.note-freq{font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);letter-spacing:.5px}
-.target-note{font-family:'DM Mono',monospace;font-size:11px;color:var(--text3)}
+.note-freq{font-family:'Inter',sans-serif;font-size:12px;color:var(--text2);letter-spacing:.5px}
+.target-note{font-family:'Inter',sans-serif;font-size:11px;color:var(--text3)}
 .target-note span{color:var(--accent);font-weight:600}
 .manual-badge{font-size:9px;font-weight:700;letter-spacing:1px;color:var(--amber);padding:2px 8px;border-radius:10px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.25);display:none}
 .manual-badge.show{display:block}
-.in-tune-badge{padding:4px 10px;border-radius:20px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent);opacity:0;transition:opacity .3s}
+.in-tune-badge{padding:4px 10px;border-radius:20px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);font-size:9px;font-weight:800;letter-spacing:2px;color:#4ade80;opacity:0;transition:opacity .3s}
 .note-card.in-tune .in-tune-badge{opacity:1}
 
 /* MİKROTONAL KART */
@@ -73,28 +106,40 @@ body{
   flex-shrink:0;min-height:110px;transition:border-color .3s,box-shadow .3s;
 }
 .micro-card.show{display:flex}
-.micro-card.in-tune{border-color:rgba(74,222,128,.35);box-shadow:0 0 24px rgba(74,222,128,.08)}
+.micro-card.in-tune{border-color:rgba(59,130,246,.35);box-shadow:0 0 24px rgba(59,130,246,.08)}
 .micro-left{display:flex;flex-direction:column;gap:4px}
 .micro-note{font-size:60px;font-weight:800;line-height:1;color:var(--text);letter-spacing:-2px;transition:color .3s}
 .micro-card.in-tune .micro-note{color:var(--accent)}
 .micro-perde{font-size:14px;font-weight:600;color:var(--text3);letter-spacing:.3px}
 .micro-right{text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.micro-koma{font-family:'DM Mono',monospace;font-size:26px;font-weight:700;color:var(--text2)}
+.micro-koma{font-family:'Inter',sans-serif;font-size:26px;font-weight:700;color:var(--text2)}
 .micro-koma sub{font-size:11px;font-weight:400;color:var(--text3);margin-left:2px}
-.micro-freq{font-family:'DM Mono',monospace;font-size:12px;color:var(--text3)}
-.micro-dev{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--text2)}
-.micro-intune{padding:4px 10px;border-radius:20px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent);opacity:0;transition:opacity .3s}
+.micro-freq{font-family:'Inter',sans-serif;font-size:12px;color:var(--text3)}
+.micro-dev{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--text2)}
+.micro-intune{padding:4px 10px;border-radius:20px;background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent);opacity:0;transition:opacity .3s}
 .micro-card.in-tune .micro-intune{opacity:1}
 
 /* GAUGE */
-.gauge-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px;min-height:0}
-#gaugeCanvas{width:100%;max-width:380px;display:block}
+.gauge-section{flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;min-height:0;position:relative;gap:4px;padding:0 8px}
+.gauge-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 10px;min-height:0;position:relative;overflow:hidden;touch-action:pan-y}
+#gaugeCanvas{width:100%;max-width:380px;display:block;transition:transform .25s cubic-bezier(.32,.72,0,1), opacity .2s}
+.gauge-arrow{width:36px;height:36px;border-radius:50%;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);font-size:22px;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s;font-family:'Inter',sans-serif;flex-shrink:0;padding-bottom:2px}
+.gauge-arrow:hover{border-color:var(--accent);color:var(--text)}
+.gauge-arrow:active{transform:scale(.92);background:var(--border2)}
+.gauge-dots{display:flex;justify-content:center;gap:6px;padding:6px 0 0;flex-shrink:0}
+.gauge-dot{width:6px;height:6px;border-radius:50%;background:var(--border2);transition:all .2s;cursor:pointer;border:none;padding:0;-webkit-tap-highlight-color:transparent}
+.gauge-dot.active{background:var(--accent);width:18px;border-radius:3px}
+.gauge-name{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-size:9px;font-weight:600;letter-spacing:2px;color:var(--text3);text-transform:uppercase;pointer-events:none}
+@media (max-width:480px){
+  .gauge-arrow{display:none}
+  .gauge-section{padding:0}
+}
 
 /* CENTS */
 .cent-row{display:flex;align-items:center;justify-content:space-between;padding:2px 24px 0;flex-shrink:0;width:100%;max-width:380px;align-self:center}
 .cent-side{color:var(--text3);font-size:10px;font-weight:600;letter-spacing:1px}
-.cent-val{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--text2);transition:color .3s;min-width:60px;text-align:center}
-.cent-val.in-tune{color:var(--accent)}
+.cent-val{font-family:'Inter',sans-serif;font-size:16px;font-weight:500;color:var(--text2);transition:color .3s;min-width:60px;text-align:center}
+.cent-val.in-tune{color:#4ade80}
 
 /* STRINGS */
 .strings-wrap{padding:8px 20px;flex-shrink:0}
@@ -108,10 +153,13 @@ body{
 .string-item:nth-child(5) .string-line{height:2px}
 .string-item:nth-child(6) .string-line{height:1.5px}
 .string-item.active .string-line{background:var(--accent)}
-.string-note{font-family:'DM Mono',monospace;font-size:10px;font-weight:400;color:var(--text3);transition:color .2s;text-align:center;letter-spacing:.3px}
+.string-item.active.in-tune .string-line{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6)}
+.string-note{font-family:'Inter',sans-serif;font-size:10px;font-weight:400;color:var(--text3);transition:color .2s;text-align:center;letter-spacing:.3px}
 .string-item.active .string-note{color:var(--accent)}
+.string-item.active.in-tune .string-note{color:#4ade80;font-weight:600}
 .string-dot{width:5px;height:5px;border-radius:50%;background:var(--border2);margin-top:6px;transition:background .2s}
 .string-item.active .string-dot{background:var(--accent)}
+.string-item.active.in-tune .string-dot{background:#4ade80;box-shadow:0 0 6px rgba(74,222,128,.7)}
 
 /* TUNING */
 .tuning-row{display:flex;align-items:center;justify-content:center;padding:0 20px 6px;flex-shrink:0}
@@ -122,15 +170,15 @@ body{
 .a4-row{display:flex;align-items:center;justify-content:center;gap:16px;padding:6px 20px 8px;flex-shrink:0}
 .a4-btn{width:42px;height:42px;border-radius:50%;background:var(--surface2);border:1px solid var(--border2);color:var(--text2);font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
 .a4-btn:active{background:var(--border2);transform:scale(.93)}
-.a4-label{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--text);min-width:110px;text-align:center;letter-spacing:.5px}
+.a4-label{font-family:'Inter',sans-serif;font-size:15px;font-weight:500;color:var(--text);min-width:110px;text-align:center;letter-spacing:.5px}
 
 /* MIC */
 .mic-row{display:flex;align-items:center;gap:8px;padding:4px 20px calc(6px + var(--safe-bottom));flex-shrink:0}
 .mic-track{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;position:relative}
-.mic-bar{height:100%;width:0%;border-radius:3px;transition:width .08s;
-  background:linear-gradient(to right,#4ade80 0%,#4ade80 60%,#f59e0b 80%,#ef4444 100%)}
+.mic-bar{height:100%;width:0%;border-radius:3px;transition:width .08s, background-color .12s;
+  background-color:#22d3ee}
 .mic-lbl{color:var(--text3);font-size:9px;font-weight:700;letter-spacing:1px;width:24px}
-.mic-db{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3);width:44px;text-align:right}
+.mic-db{font-family:'Inter',sans-serif;font-size:10px;color:var(--text3);width:44px;text-align:right}
 
 /* MODAL */
 .modal-bg{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.7);display:flex;align-items:flex-end;opacity:0;pointer-events:none;transition:opacity .25s}
@@ -140,23 +188,38 @@ body{
 .modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 18px}
 .modal-title{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);text-align:center;margin-bottom:14px}
 .tuning-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
+/* Modal — yeni iki adımlı yapı */
+.modal-cat-row{display:flex;gap:8px}
+.cat-btn-big, .cat-btn{flex:1;padding:14px 0;border-radius:12px;font-size:14px;font-weight:600;letter-spacing:.3px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif}
+.cat-btn-big{padding:16px 0;font-size:15px;font-weight:700}
+.cat-btn-big:active, .cat-btn:active{transform:scale(.97);background:var(--border2)}
+.cat-btn-big:hover, .cat-btn:hover{border-color:var(--accent)}
+
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border2)}
+.modal-back{padding:6px 12px;border-radius:8px;font-size:13px;font-weight:500;border:none;background:transparent;color:var(--text2);cursor:pointer;-webkit-tap-highlight-color:transparent;font-family:'Inter',sans-serif}
+.modal-back:active{background:var(--surface2)}
+.modal-header-title{font-size:14px;font-weight:700;color:var(--text);letter-spacing:.3px;text-align:center;flex:1}
+
+.string-count-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.string-count-btn{padding:20px 12px;border-radius:14px;border:1px solid var(--border2);background:var(--surface2);color:var(--text);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;font-size:18px;font-weight:700;font-family:'Inter',sans-serif;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.string-count-btn span{font-size:11px;font-weight:400;color:var(--text3);letter-spacing:.3px}
+.string-count-btn:active{transform:scale(.97)}
+.string-count-btn:hover{border-color:var(--accent);background:rgba(59,130,246,.06)}
 .tuning-cat-btns{display:flex;gap:8px;margin-bottom:12px}
 .tuning-cat-btn{flex:1;padding:8px 0;border-radius:10px;font-size:12px;font-weight:700;letter-spacing:.5px;border:1px solid var(--border2);background:var(--surface2);color:var(--text2);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
-.tuning-cat-btn.active{background:rgba(74,222,128,.1);border-color:var(--accent);color:var(--accent)}
+.tuning-cat-btn.active{background:rgba(59,130,246,.1);border-color:var(--accent);color:var(--accent)}
 .tuning-cat-btn:active{transform:scale(.97)}
-.tuning-card.sel{border-color:var(--accent);background:rgba(74,222,128,.06)}
+.tuning-card{padding:12px 14px;border-radius:12px;border:1px solid var(--border2);background:var(--surface2);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent}
+.tuning-card:hover{border-color:var(--accent)}
+.tuning-card.sel{border-color:var(--accent);background:rgba(59,130,246,.08)}
 .tuning-card:active{transform:scale(.97)}
-.tuning-card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.tuning-card-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;letter-spacing:.2px}
 .tuning-card.sel .tuning-card-name{color:var(--accent)}
-.tuning-card-notes{font-family:'DM Mono',monospace;font-size:10px;color:var(--text3)}
+.tuning-card-notes{font-family:'Inter',sans-serif;font-size:11px;color:var(--text3);letter-spacing:.3px}
 </style>
 </head>
 <body>
-
-<!-- CHROMATIC BUTTON -->
-<div style="display:flex;justify-content:flex-end;padding:10px 20px 0;flex-shrink:0;">
-  <button class="mode-tab" id="tabChromatic" onclick="toggleChromatic()" style="padding:5px 14px;border-radius:20px;font-size:10px;">CHROMATIC</button>
-</div>
 
 <!-- STANDARD/CHROMATIC NOTE CARD -->
 <div class="note-card" id="noteCard">
@@ -186,10 +249,15 @@ body{
   </div>
 </div>
 
-<!-- GAUGE -->
-<div class="gauge-wrap">
-  <canvas id="gaugeCanvas"></canvas>
+<!-- GAUGE — KAYDIRILABİLİR ARAYÜZLER -->
+<div class="gauge-section">
+  <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)" aria-label="Önceki">‹</button>
+  <div class="gauge-wrap" id="gaugeWrap">
+    <canvas id="gaugeCanvas"></canvas>
+  </div>
+  <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)" aria-label="Sonraki">›</button>
 </div>
+<div class="gauge-dots" id="gaugeDots" style="display:none;"></div>
 
 <!-- CENTS -->
 <div class="cent-row">
@@ -199,13 +267,13 @@ body{
 </div>
 
 <!-- STRINGS -->
-<div id="stringsSection">
+<div id="stringsSection" style="display:none;">
   <div class="strings-wrap">
     <div class="strings-list" id="stringsList"></div>
   </div>
-  <div class="tuning-row">
-    <button class="tuning-chip" id="tuningChip" onclick="openTuning()">Bass – Guitar</button>
-  </div>
+</div>
+<div class="tuning-row">
+  <button class="tuning-chip" id="tuningChip" onclick="openTuning()">▼ Chromatic</button>
 </div>
 
 <!-- A4 -->
@@ -226,12 +294,7 @@ body{
 <div class="modal-bg" id="tuningModal" onclick="closeTuning(event)">
   <div class="modal-box">
     <div class="modal-handle"></div>
-    <div class="tuning-cat-btns">
-      <button class="tuning-cat-btn" id="catBass" onclick="setTuningCat('bass')">Bass</button>
-      <button class="tuning-cat-btn active" id="catGitar" onclick="setTuningCat('gitar')">Gitar</button>
-      <button class="tuning-cat-btn" id="catUke" onclick="setTuningCat('uke')">Ukulele</button>
-    </div>
-    <div id="tuningGrid"></div>
+    <div id="modalContent"></div>
   </div>
 </div>
 
@@ -249,6 +312,9 @@ const TUNINGS = [
   {cat:'gitar', name:'Open E',      notes:['E2','B2','E3','G#3','B3','E4']},
   {cat:'gitar', name:'Open A',      notes:['E2','A2','E3','A3','C#4','E4']},
   {cat:'gitar', name:'Drop B',      notes:['B1','F#2','B2','E3','G#3','C#4']},
+  // Gitar 7 Tel
+  {cat:'gitar', name:'Gitar 7 - Standard', notes:['B1','E2','A2','D3','G3','B3','E4']},
+  {cat:'gitar', name:'Gitar 7 - Drop A',   notes:['A1','E2','A2','D3','G3','B3','E4']},
   // Bass 4 Tel
   {cat:'bass', name:'Bass 4 - Standard',  notes:['E1','A1','D2','G2']},
   {cat:'bass', name:'Bass 4 - Drop D',    notes:['D1','A1','D2','G2']},
@@ -259,6 +325,8 @@ const TUNINGS = [
   {cat:'bass', name:'Bass 5 - Drop A',   notes:['A0','E1','A1','D2','G2']},
   // Bass 6 Tel
   {cat:'bass', name:'Bass 6 - Standard', notes:['B0','E1','A1','D2','G2','C3']},
+  // Bass 7 Tel
+  {cat:'bass', name:'Bass 7 - Standard', notes:['F#0','B0','E1','A1','D2','G2','C3']},
   // Ukulele
   {cat:'uke', name:'Standard (GCEA)',  notes:['G4','C4','E4','A4']},
   {cat:'uke', name:'Low G (GCEA)',     notes:['G3','C4','E4','A4']},
@@ -332,7 +400,7 @@ const PERDELER = [
 // ===== STATE =====
 let a4 = 440;
 let tuning = TUNINGS[0];
-let mode = 'standard'; // standard | chromatic | microtonal
+let mode = 'chromatic'; // standard | chromatic | microtonal
 let pitchData = null;
 let microData = null;
 let closestStr = null;
@@ -459,7 +527,22 @@ function tick() {
   // dB hesapla: 0 dBFS referansı
   const db = level > 0.00001 ? Math.max(-60, 20 * Math.log10(level)) : -60;
   const pct = Math.max(0, ((db + 60) / 60) * 100); // -60dB=0%, 0dB=100%
-  document.getElementById('micBar').style.width = pct + '%';
+  const micBar = document.getElementById('micBar');
+  micBar.style.width = pct + '%';
+  // Akışkan renk: cyan → yeşil → amber → kırmızı
+  // pct: 0–35 cyan→yeşil, 35–65 yeşil→amber, 65–100 amber→kırmızı
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const lerpColor = (c1, c2, t) => [
+    Math.round(lerp(c1[0], c2[0], t)),
+    Math.round(lerp(c1[1], c2[1], t)),
+    Math.round(lerp(c1[2], c2[2], t)),
+  ];
+  const cyan = [34, 211, 238], green = [74, 222, 128], amber = [245, 158, 11], red = [239, 68, 68];
+  let rgb;
+  if (pct < 35) rgb = lerpColor(cyan, green, pct / 35);
+  else if (pct < 65) rgb = lerpColor(green, amber, (pct - 35) / 30);
+  else rgb = lerpColor(amber, red, Math.min(1, (pct - 65) / 35));
+  micBar.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
   document.getElementById('micDb').textContent = db > -60 ? db.toFixed(1)+' dB' : '–∞ dB';
 
   if (level < 0.008) {
@@ -541,12 +624,26 @@ function updateUI() {
   document.getElementById('manualBadge').className = 'manual-badge'+(manualStr!==null&&mode==='standard'?' show':'');
 
   document.querySelectorAll('.string-item').forEach((el,i) => {
-    el.className = 'string-item' + (i === closestStr && mode === 'standard' ? ' active' : '');
+    const isActive = i === closestStr && mode === 'standard';
+    const isInTune = isActive && pitchData?.inTune;
+    el.className = 'string-item' + (isActive ? ' active' : '') + (isInTune ? ' in-tune' : '');
   });
 }
 
-// ===== GAUGE =====
-function drawGauge() {
+// ===== GAUGE — STİLLER =====
+const GAUGES = [
+  { id:'klasik',       name:'Klasik' },
+  { id:'klasikBuyuk',  name:'Klasik Büyük' },
+  { id:'komur',        name:'Kömür' },
+  { id:'krem',         name:'Krem' },
+  { id:'morNeon',      name:'Mor Neon' },
+  { id:'orman',        name:'Orman' },
+  { id:'minimal',      name:'Minimalist' },
+  { id:'led',          name:'Dijital LED' },
+];
+let currentGauge = 0;
+
+function getCanvasCtx() {
   const canvas = document.getElementById('gaugeCanvas');
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.offsetWidth, H = W * 0.58;
@@ -554,17 +651,41 @@ function drawGauge() {
   const ctx = canvas.getContext('2d');
   ctx.setTransform(dpr,0,0,dpr,0,0);
   ctx.clearRect(0,0,W,H);
+  return { canvas, ctx, W, H };
+}
+
+function drawGauge() {
+  const style = GAUGES[currentGauge].id;
+  // Tema body class'ı uygula
+  const themeIds = ['komur','krem','morNeon','orman'];
+  document.body.className = document.body.className
+    .split(' ').filter(c => !c.startsWith('theme-')).join(' ').trim();
+  if (themeIds.includes(style)) {
+    document.body.classList.add('theme-' + style);
+  }
+
+  if (style === 'klasik') drawKlasik();
+  else if (style === 'klasikBuyuk') drawKlasikBuyuk();
+  else if (style === 'komur') drawKlasikTema('komur');
+  else if (style === 'krem') drawKlasikTema('krem');
+  else if (style === 'morNeon') drawKlasikTema('morNeon');
+  else if (style === 'orman') drawKlasikTema('orman');
+  else if (style === 'minimal') drawMinimal();
+  else if (style === 'led') drawLED();
+}
+
+// 1. KLASİK — yarım daire gauge (orijinal)
+function drawKlasik() {
+  const { ctx, W, H } = getCanvasCtx();
   const cx = W/2, cy = H-14, R = Math.min(W*.46,H*.9);
 
   ctx.beginPath(); ctx.arc(cx,cy,R,Math.PI,2*Math.PI);
   ctx.strokeStyle = '#1a2d4a'; ctx.lineWidth = 10; ctx.stroke();
 
-  // Yeşil bölge ±2 cent
   ctx.beginPath();
   ctx.arc(cx, cy, R, Math.PI+(48/100)*Math.PI, Math.PI+(52/100)*Math.PI);
   ctx.strokeStyle = 'rgba(74,222,128,.5)'; ctx.lineWidth = 10; ctx.stroke();
 
-  // Tik işaretleri
   [-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50].forEach(c => {
     const ang = Math.PI + (c+50)/100*Math.PI;
     const isLabel = [-40,-20,0,20,40].includes(c);
@@ -577,13 +698,12 @@ function drawGauge() {
     ctx.lineWidth = isLabel ? 2 : 1; ctx.stroke();
     if (isLabel) {
       ctx.fillStyle = '#3d5278';
-      ctx.font = "500 11px 'DM Mono',monospace";
+      ctx.font = "500 11px 'Inter',sans-serif";
       ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
       ctx.fillText((c>0?'+':'')+c, cx+(R-32)*Math.cos(ang), cy+(R-32)*Math.sin(ang));
     }
   });
 
-  // İbre
   const inTune = pitchData?.inTune || microData?.inTune || false;
   const clamp = Math.max(-50, Math.min(50, needleCents));
   const ang = Math.PI + (clamp+50)/100*Math.PI;
@@ -596,16 +716,330 @@ function drawGauge() {
   ctx.beginPath(); ctx.arc(cx,cy,4,0,2*Math.PI); ctx.fillStyle='#1a2d4a'; ctx.fill();
 }
 
-// ===== MOD DEĞİŞTİR =====
-function toggleChromatic() {
-  mode = mode === 'chromatic' ? 'standard' : 'chromatic';
-  const btn = document.getElementById('tabChromatic');
-  btn.className = 'mode-tab' + (mode === 'chromatic' ? ' active' : '');
-  document.getElementById('stringsSection').style.display = mode === 'standard' ? '' : 'none';
-  if (mode !== 'standard') { manualStr = null; closestStr = null; }
-  pitchData = null; microData = null;
-  updateUI(); drawGauge();
+// 1B. KLASİK BÜYÜK — okunaklı versiyon: kalın çizgiler, büyük rakamlar, yüksek kontrast
+function drawKlasikBuyuk() {
+  const { ctx, W, H } = getCanvasCtx();
+  const cx = W/2, cy = H-14, R = Math.min(W*.46, H*.9);
+  const inTune = pitchData?.inTune || microData?.inTune || false;
+
+  // Yay — kalın
+  ctx.beginPath(); ctx.arc(cx,cy,R,Math.PI,2*Math.PI);
+  ctx.strokeStyle = '#243a5f'; ctx.lineWidth = 16; ctx.stroke();
+
+  // Yeşil bölge — daha geniş ve belirgin
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, Math.PI+(46/100)*Math.PI, Math.PI+(54/100)*Math.PI);
+  ctx.strokeStyle = '#4ade80'; ctx.lineWidth = 16; ctx.stroke();
+
+  // Tik işaretleri — büyük etiketli
+  [-50,-40,-30,-20,-10,0,10,20,30,40,50].forEach(c => {
+    const ang = Math.PI + (c+50)/100*Math.PI;
+    const isLabel = c % 20 === 0 || c === 0;
+    const isMajor = c % 10 === 0;
+    const tl = isLabel ? 22 : isMajor ? 14 : 8;
+    ctx.beginPath();
+    ctx.moveTo(cx+(R+4)*Math.cos(ang), cy+(R+4)*Math.sin(ang));
+    ctx.lineTo(cx+(R+4-tl)*Math.cos(ang), cy+(R+4-tl)*Math.sin(ang));
+    ctx.strokeStyle = c === 0 ? '#4ade80' : '#5b7299';
+    ctx.lineWidth = isLabel ? 3 : 2; ctx.stroke();
+    if (isLabel) {
+      // Büyük rakamlar
+      ctx.fillStyle = c === 0 ? '#4ade80' : '#cbd5e1';
+      ctx.font = `${c===0?'800':'700'} 18px 'Inter',sans-serif`;
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText((c>0?'+':'')+c, cx+(R-44)*Math.cos(ang), cy+(R-44)*Math.sin(ang));
+    }
+  });
+
+  // İbre — kalın
+  const clamp = Math.max(-50, Math.min(50, needleCents));
+  const ang = Math.PI + (clamp+50)/100*Math.PI;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx+(R-30)*Math.cos(ang), cy+(R-30)*Math.sin(ang));
+  ctx.strokeStyle = inTune ? '#4ade80' : '#ffffff';
+  ctx.lineWidth = 5; ctx.lineCap = 'round';
+  ctx.shadowColor = inTune ? '#4ade80' : 'rgba(255,255,255,.4)';
+  ctx.shadowBlur = inTune ? 14 : 6;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Pivot — büyük
+  ctx.beginPath(); ctx.arc(cx,cy,16,0,2*Math.PI);
+  ctx.fillStyle='#f59e0b'; ctx.fill();
+  ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 2; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx,cy,8,0,2*Math.PI);
+  ctx.fillStyle='#0a1628'; ctx.fill();
+
+  // FLAT/SHARP etiketleri — büyük
+  ctx.fillStyle = '#7d93b2';
+  ctx.font = "800 14px 'Inter',sans-serif";
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('FLAT ♭', cx + (R+18)*Math.cos(Math.PI), cy + (R+18)*Math.sin(Math.PI) - 4);
+  ctx.fillText('♯ SHARP', cx + (R+18)*Math.cos(2*Math.PI), cy + (R+18)*Math.sin(2*Math.PI) - 4);
 }
+
+// KLASİK + TEMA — orijinal yarım daire, farklı renk paletlerinde
+function drawKlasikTema(temaId) {
+  const themes = {
+    komur: {
+      bg: null, // canvas zemini saf siyah; body zemini değişmez ama canvas dolduralım
+      arc: '#2a2a2a',
+      green: '#facc15', // sarı
+      greenZone: 'rgba(250,204,21,.55)',
+      tickMinor: '#3a3a3a',
+      tickLabel: '#9ca3af',
+      needle: '#facc15',
+      needleNeutral: '#f5f5f5',
+      pivot: '#fb923c',
+      pivotInner: '#000000',
+    },
+    krem: {
+      bg: '#f5e9d3',
+      arc: '#a8927a',
+      green: '#15803d',
+      greenZone: 'rgba(21,128,61,.4)',
+      tickMinor: '#7a6a55',
+      tickLabel: '#5c4a32',
+      needle: '#15803d',
+      needleNeutral: '#3a2a1a',
+      pivot: '#a04b2a',
+      pivotInner: '#5c3010',
+    },
+    morNeon: {
+      bg: '#1a0c2e',
+      arc: '#3a1c5a',
+      green: '#f0abfc', // neon pembe
+      greenZone: 'rgba(240,171,252,.5)',
+      tickMinor: '#4a2c6a',
+      tickLabel: '#c084fc',
+      needle: '#f0abfc',
+      needleNeutral: '#e9d5ff',
+      pivot: '#c026d3',
+      pivotInner: '#1a0c2e',
+    },
+    orman: {
+      bg: '#0d1f15',
+      arc: '#1e3a2a',
+      green: '#fbbf24', // altın
+      greenZone: 'rgba(251,191,36,.5)',
+      tickMinor: '#2a4a35',
+      tickLabel: '#86efac',
+      needle: '#fbbf24',
+      needleNeutral: '#dcfce7',
+      pivot: '#a16207',
+      pivotInner: '#0d1f15',
+    },
+  };
+  const tema = themes[temaId];
+  const { ctx, W, H } = getCanvasCtx();
+
+  // Tema arka planı
+  if (tema.bg) {
+    ctx.fillStyle = tema.bg;
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  const cx = W/2, cy = H-14, R = Math.min(W*.46, H*.9);
+  const inTune = pitchData?.inTune || microData?.inTune || false;
+
+  // Yay
+  ctx.beginPath(); ctx.arc(cx,cy,R,Math.PI,2*Math.PI);
+  ctx.strokeStyle = tema.arc; ctx.lineWidth = 10; ctx.stroke();
+
+  // In-tune bölgesi
+  ctx.beginPath();
+  ctx.arc(cx, cy, R, Math.PI+(48/100)*Math.PI, Math.PI+(52/100)*Math.PI);
+  ctx.strokeStyle = tema.greenZone; ctx.lineWidth = 10; ctx.stroke();
+
+  // Tik işaretleri
+  [-50,-45,-40,-35,-30,-25,-20,-15,-10,-5,0,5,10,15,20,25,30,35,40,45,50].forEach(c => {
+    const ang = Math.PI + (c+50)/100*Math.PI;
+    const isLabel = [-40,-20,0,20,40].includes(c);
+    const isMajor = c % 10 === 0;
+    const tl = isLabel ? 16 : isMajor ? 10 : 5;
+    ctx.beginPath();
+    ctx.moveTo(cx+(R+2)*Math.cos(ang), cy+(R+2)*Math.sin(ang));
+    ctx.lineTo(cx+(R+2-tl)*Math.cos(ang), cy+(R+2-tl)*Math.sin(ang));
+    ctx.strokeStyle = c === 0 ? tema.green : tema.tickMinor;
+    ctx.lineWidth = isLabel ? 2 : 1; ctx.stroke();
+    if (isLabel) {
+      ctx.fillStyle = tema.tickLabel;
+      ctx.font = "500 11px 'Inter',sans-serif";
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.fillText((c>0?'+':'')+c, cx+(R-32)*Math.cos(ang), cy+(R-32)*Math.sin(ang));
+    }
+  });
+
+  // İbre
+  const clamp = Math.max(-50, Math.min(50, needleCents));
+  const ang = Math.PI + (clamp+50)/100*Math.PI;
+  ctx.beginPath(); ctx.moveTo(cx,cy);
+  ctx.lineTo(cx+(R-22)*Math.cos(ang), cy+(R-22)*Math.sin(ang));
+  ctx.strokeStyle = inTune ? tema.green : tema.needleNeutral;
+  ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.stroke();
+
+  // Pivot
+  ctx.beginPath(); ctx.arc(cx,cy,8,0,2*Math.PI);
+  ctx.fillStyle = tema.pivot; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx,cy,4,0,2*Math.PI);
+  ctx.fillStyle = tema.pivotInner; ctx.fill();
+}
+
+// 2. MİNİMALİST — yatay ince çizgi, kayan ibre
+function drawMinimal() {
+  const { ctx, W, H } = getCanvasCtx();
+  const cy = H/2;
+  const padX = 30;
+  const lineW = W - padX*2;
+  const cx = W/2;
+
+  // Ana çizgi
+  ctx.beginPath();
+  ctx.moveTo(padX, cy); ctx.lineTo(W-padX, cy);
+  ctx.strokeStyle = '#1e2e4a'; ctx.lineWidth = 1; ctx.stroke();
+
+  // Merkez işareti (yeşil dikey çizgi)
+  ctx.beginPath();
+  ctx.moveTo(cx, cy-22); ctx.lineTo(cx, cy+22);
+  ctx.strokeStyle = '#4ade80'; ctx.lineWidth = 1; ctx.stroke();
+
+  // Hafif tik işaretleri
+  [-40,-20,20,40].forEach(c => {
+    const x = cx + (c/50) * (lineW/2);
+    ctx.beginPath();
+    ctx.moveTo(x, cy-4); ctx.lineTo(x, cy+4);
+    ctx.strokeStyle = '#253551'; ctx.lineWidth = 1; ctx.stroke();
+    ctx.fillStyle = '#3d5278';
+    ctx.font = "400 10px 'Inter',sans-serif";
+    ctx.textAlign = 'center';
+    ctx.fillText((c>0?'+':'')+c, x, cy+22);
+  });
+
+  // İbre — küçük yuvarlak nokta
+  const inTune = pitchData?.inTune || microData?.inTune || false;
+  const clamp = Math.max(-50, Math.min(50, needleCents));
+  const x = cx + (clamp/50) * (lineW/2);
+
+  // İz çizgisi
+  ctx.beginPath();
+  ctx.moveTo(cx, cy); ctx.lineTo(x, cy);
+  ctx.strokeStyle = inTune ? 'rgba(74,222,128,.4)' : 'rgba(59,130,246,.3)';
+  ctx.lineWidth = 2; ctx.stroke();
+
+  // Halka
+  ctx.beginPath(); ctx.arc(x, cy, 9, 0, 2*Math.PI);
+  ctx.fillStyle = inTune ? '#4ade80' : '#3b82f6';
+  ctx.fill();
+  ctx.beginPath(); ctx.arc(x, cy, 4, 0, 2*Math.PI);
+  ctx.fillStyle = '#0a1628'; ctx.fill();
+}
+
+// 3. DİJİTAL LED — strob şerit, soldan-sağa LED'ler
+function drawLED() {
+  const { ctx, W, H } = getCanvasCtx();
+  const cy = H/2;
+  const padX = 24;
+  const ledCount = 21; // -50..+50, her 5 cent
+  const ledW = (W - padX*2) / ledCount;
+  const ledH = 36;
+  const ledY = cy - ledH/2;
+  const inTune = pitchData?.inTune || microData?.inTune || false;
+  const clamp = Math.max(-50, Math.min(50, needleCents));
+  const center = (ledCount - 1) / 2;
+  const activeIdx = (clamp / 50) * center + center;
+
+  for (let i = 0; i < ledCount; i++) {
+    const x = padX + i*ledW;
+    const distFromCenter = Math.abs(i - center);
+    const distFromActive = Math.abs(i - activeIdx);
+    const isCenter = i === Math.round(center);
+
+    // Off renk
+    let fill = '#1a2d4a';
+    let glow = 0;
+
+    if (distFromActive < 1.2) {
+      // Aktif LED — pitch'e göre
+      if (inTune || distFromCenter <= 0.8) {
+        fill = '#4ade80'; glow = 14;
+      } else if (distFromCenter < 4) {
+        fill = '#f59e0b'; glow = 12;
+      } else {
+        fill = '#ef4444'; glow = 12;
+      }
+    } else if (isCenter) {
+      // Merkez işareti — hafif yeşil
+      fill = 'rgba(74,222,128,.18)';
+    }
+
+    if (glow > 0) {
+      ctx.shadowBlur = glow; ctx.shadowColor = fill;
+    } else {
+      ctx.shadowBlur = 0;
+    }
+
+    ctx.fillStyle = fill;
+    ctx.fillRect(x+1, ledY, ledW-2, ledH);
+    ctx.shadowBlur = 0;
+  }
+
+  // Alt etiketler
+  ctx.fillStyle = '#3d5278';
+  ctx.font = "500 10px 'Inter',sans-serif";
+  ctx.textAlign = 'center';
+  [-50, 0, 50].forEach(c => {
+    const i = (c / 50) * center + center;
+    const x = padX + i*ledW + ledW/2;
+    ctx.fillText((c>0?'+':'')+c, x, cy + ledH/2 + 16);
+  });
+}
+
+// ===== ARAYÜZ KAYDIRMA =====
+function changeGauge(dir) {
+  const n = GAUGES.length;
+  currentGauge = (currentGauge + dir + n) % n;
+  renderGaugeDots();
+  drawGauge();
+}
+
+function renderGaugeDots() {
+  document.getElementById('gaugeDots').innerHTML = GAUGES.map((g, i) =>
+    `<button class="gauge-dot${i===currentGauge?' active':''}" onclick="goToGauge(${i})" aria-label="${g.name}"></button>`
+  ).join('');
+}
+
+function goToGauge(i) {
+  currentGauge = i;
+  renderGaugeDots();
+  drawGauge();
+}
+
+// Klavye okları
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') changeGauge(-1);
+  else if (e.key === 'ArrowRight') changeGauge(1);
+});
+
+// Touch swipe
+(() => {
+  const wrap = document.getElementById('gaugeWrap');
+  let startX = 0, startY = 0, tracking = false;
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    tracking = true;
+  }, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = (e.changedTouches[0].clientX - startX);
+    const dy = (e.changedTouches[0].clientY - startY);
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)*1.5) {
+      changeGauge(dx < 0 ? 1 : -1);
+    }
+  }, {passive:true});
+})();
 
 // ===== TELLER =====
 function renderStrings() {
@@ -629,80 +1063,153 @@ function changeA4(dir) {
   document.getElementById('a4Label').textContent = 'A4 = '+a4+' Hz';
 }
 
-// ===== TUNING =====
-let tuningCat = 'gitar';
-
-function setTuningCat(cat) {
-  tuningCat = cat;
-  ['bass','gitar','uke'].forEach(c => {
-    const id = 'cat'+c.charAt(0).toUpperCase()+c.slice(1);
-    const el = document.getElementById(id);
-    if (el) el.className = 'tuning-cat-btn'+(cat===c?' active':'');
-  });
-  renderTuningGrid();
-}
-
-function renderTuningGrid() {
-  const filtered = TUNINGS.map((t,i) => ({...t,i})).filter(t => t.cat === tuningCat);
-  let html = '';
-
-  if (tuningCat === 'gitar') {
-    html = `<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">Gitar Akort Sistemleri</div>`;
-    html += `<div class="tuning-grid">` + filtered.map(t => `
-      <div class="tuning-card ${t.name===tuning.name?'sel':''}" onclick="selectTuning(${t.i})">
-        <div class="tuning-card-name">${t.name}</div>
-        <div class="tuning-card-notes">${t.notes.join(' ')}</div>
-      </div>`).join('') + `</div>`;
-  } else if (tuningCat === 'uke') {
-    html = `<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text3);text-transform:uppercase;margin-bottom:8px;">Ukulele Akort Sistemleri</div>`;
-    html += `<div class="tuning-grid">` + filtered.map(t => `
-      <div class="tuning-card ${t.name===tuning.name?'sel':''}" onclick="selectTuning(${t.i})">
-        <div class="tuning-card-name">${t.name}</div>
-        <div class="tuning-card-notes">${t.notes.join(' ')}</div>
-      </div>`).join('') + `</div>`;
-  } else {
-    const groups = [
-      {label:'4 Telli Bas', prefix:'Bass 4'},
-      {label:'5 Telli Bas', prefix:'Bass 5'},
-      {label:'6 Telli Bas', prefix:'Bass 6'},
-    ];
-    groups.forEach(g => {
-      const items = filtered.filter(t => t.name.startsWith(g.prefix));
-      if (!items.length) return;
-      html += `<div style="font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text3);text-transform:uppercase;margin:12px 0 8px;">${g.label}</div>`;
-      html += `<div class="tuning-grid">` + items.map(t => `
-        <div class="tuning-card ${t.name===tuning.name?'sel':''}" onclick="selectTuning(${t.i})">
-          <div class="tuning-card-name">${t.name.replace('Bass 4 - ','').replace('Bass 5 - ','').replace('Bass 6 - ','')}</div>
-          <div class="tuning-card-notes">${t.notes.join(' ')}</div>
-        </div>`).join('') + `</div>`;
-    });
-  }
-  document.getElementById('tuningGrid').innerHTML = html;
-}
+// ===== TUNING MODAL — İKİ ADIMLI =====
+let modalView = 'root'; // root | bass | gitar | uke
 
 function openTuning() {
-  tuningCat = tuning.cat || 'gitar';
-  ['bass','gitar','uke'].forEach(c => {
-    const id = 'cat'+c.charAt(0).toUpperCase()+c.slice(1);
-    const el = document.getElementById(id);
-    if (el) el.className = 'tuning-cat-btn'+(tuningCat===c?' active':'');
-  });
-  renderTuningGrid();
+  modalView = 'root';
+  renderModal();
   document.getElementById('tuningModal').classList.add('open');
 }
+
 function closeTuning(e) {
   if (e.target === document.getElementById('tuningModal'))
     document.getElementById('tuningModal').classList.remove('open');
 }
+
+function backToRoot() {
+  modalView = 'root';
+  renderModal();
+}
+
+function renderModal() {
+  const el = document.getElementById('modalContent');
+  if (modalView === 'root') {
+    el.innerHTML = `
+      <div class="modal-cat-row" style="margin-bottom:10px;">
+        <button class="cat-btn-big" onclick="selectChromatic()">Chromatic</button>
+      </div>
+      <div class="modal-cat-row">
+        <button class="cat-btn" onclick="goCat('bass')">Bass</button>
+        <button class="cat-btn" onclick="goCat('gitar')">Gitar</button>
+        <button class="cat-btn" onclick="goCat('uke')">Ukulele</button>
+      </div>`;
+    return;
+  }
+
+  // Alt görünümler
+  const titles = { bass:'Bass', gitar:'Gitar', uke:'Ukulele' };
+  let body = '';
+
+  if (modalView === 'bass') {
+    const stringCounts = [4,5,6,7];
+    const buttons = stringCounts.map(n => {
+      const items = TUNINGS.filter(t => t.name.startsWith('Bass '+n));
+      if (!items.length) return '';
+      return `<button class="string-count-btn" onclick="showTunings('bass',${n})">${n} Telli<span>${items.length} akort</span></button>`;
+    }).join('');
+    body = `<div class="string-count-grid">${buttons}</div>`;
+  } else if (modalView === 'gitar') {
+    const stringCounts = [6,7];
+    const buttons = stringCounts.map(n => {
+      const items = n === 6
+        ? TUNINGS.filter(t => t.cat==='gitar' && !t.name.startsWith('Gitar 7'))
+        : TUNINGS.filter(t => t.name.startsWith('Gitar 7'));
+      if (!items.length) return '';
+      return `<button class="string-count-btn" onclick="showTunings('gitar',${n})">${n} Telli<span>${items.length} akort</span></button>`;
+    }).join('');
+    body = `<div class="string-count-grid">${buttons}</div>`;
+  } else if (modalView === 'uke') {
+    // Ukulele tek tel sayısı — direkt akortları göster
+    body = renderTuningCards(TUNINGS.filter(t => t.cat === 'uke'));
+  } else if (modalView.startsWith('list-')) {
+    const [, cat, n] = modalView.split('-');
+    const num = parseInt(n);
+    let items;
+    if (cat === 'bass') {
+      items = TUNINGS.filter(t => t.name.startsWith('Bass '+num));
+    } else if (cat === 'gitar') {
+      items = num === 6
+        ? TUNINGS.filter(t => t.cat==='gitar' && !t.name.startsWith('Gitar 7'))
+        : TUNINGS.filter(t => t.name.startsWith('Gitar 7'));
+    }
+    body = renderTuningCards(items);
+  }
+
+  // Geri butonlu başlık
+  let titleText;
+  if (modalView === 'bass' || modalView === 'gitar' || modalView === 'uke') {
+    titleText = titles[modalView];
+  } else if (modalView.startsWith('list-')) {
+    const [, cat, n] = modalView.split('-');
+    titleText = titles[cat] + ' · ' + n + ' Telli';
+  }
+
+  const backTarget = modalView.startsWith('list-')
+    ? `goCat('${modalView.split('-')[1]}')`
+    : 'backToRoot()';
+
+  el.innerHTML = `
+    <div class="modal-header">
+      <button class="modal-back" onclick="${backTarget}">← Geri</button>
+      <div class="modal-header-title">${titleText}</div>
+      <div style="width:60px;"></div>
+    </div>
+    ${body}`;
+}
+
+function goCat(cat) {
+  modalView = cat;
+  renderModal();
+}
+
+function showTunings(cat, n) {
+  modalView = 'list-' + cat + '-' + n;
+  renderModal();
+}
+
+function renderTuningCards(items) {
+  if (!items.length) return '<div style="text-align:center;color:var(--text3);padding:20px;">Akort bulunamadı</div>';
+  return `<div class="tuning-grid">` + items.map(t => {
+    const i = TUNINGS.indexOf(t);
+    // İsmi temizle: "Bass 4 - Standard" → "Standard"
+    const cleanName = t.name
+      .replace(/^Bass \d+ - /, '')
+      .replace(/^Gitar 7 - /, '');
+    return `<div class="tuning-card ${t.name===tuning.name?'sel':''}" onclick="selectTuning(${i})">
+      <div class="tuning-card-name">${cleanName}</div>
+      <div class="tuning-card-notes">${t.notes.join(' · ')}</div>
+    </div>`;
+  }).join('') + `</div>`;
+}
+
+function selectChromatic() {
+  mode = 'chromatic';
+  manualStr = null;
+  closestStr = null;
+  pitchData = null; microData = null;
+  document.getElementById('stringsSection').style.display = 'none';
+  document.getElementById('tuningChip').textContent = '▼ Chromatic';
+  document.getElementById('tuningModal').classList.remove('open');
+  updateUI(); drawGauge();
+}
+
 function selectTuning(i) {
   tuning = TUNINGS[i]; manualStr = null;
   document.getElementById('tuningChip').textContent = '▼ '+tuning.name;
   document.getElementById('tuningModal').classList.remove('open');
+  if (mode !== 'standard') {
+    mode = 'standard';
+    document.getElementById('stringsSection').style.display = '';
+    pitchData = null; microData = null;
+  }
   renderStrings();
+  updateUI(); drawGauge();
 }
 
 // ===== BAŞLAT =====
 renderStrings();
+renderGaugeDots();
 drawGauge();
 startAudio();
 window.addEventListener('resize', drawGauge);
