@@ -1,0 +1,21 @@
+{
+  "name": "YTuner - Müzik Akort Uygulaması",
+  "short_name": "YTuner",
+  "description": "Profesyonel enstrüman ve mikrotonal akort uygulaması.",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#0a1628",
+  "theme_color": "#0a1628",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3043/3043665.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3043/3043665.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
