@@ -4,7 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0a1628">
-<title>UTuner</title>
+<title>YTuner</title>
+<style>
+@font-face {
+  font-family: 'Albertus';
+  src: url('Albertus Medium Regular.ttf');
+}
+</style>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -58,6 +66,27 @@ body{
   overflow:hidden;
   padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);
   user-select:none;
+}
+
+.app-header{
+  padding: 16px 20px 4px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-shrink: 0;
+}
+.logo{
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-family: 'Albertus', serif;
+  text-transform: uppercase;
+}
+.logo-highlight { 
+  color: #3b82f6; /* Elektrik Mavisi */
+}
+.logo-tuner {
+  color: #fff8e7; /* Evren Rengi (Cosmic Latte) */
 }
 
 /* MODE TOGGLE */
@@ -221,6 +250,10 @@ body{
 </head>
 <body>
 
+<div class="app-header">
+  <h1 class="logo"><span class="logo-highlight">Y</span><span class="logo-tuner">Tuner</span></h1>
+</div>
+
 <!-- STANDARD/CHROMATIC NOTE CARD -->
 <div class="note-card" id="noteCard">
   <div class="note-display">
@@ -313,8 +346,8 @@ const TUNINGS = [
   {cat:'gitar', name:'Open A',      notes:['E2','A2','E3','A3','C#4','E4']},
   {cat:'gitar', name:'Drop B',      notes:['B1','F#2','B2','E3','G#3','C#4']},
   // Gitar 7 Tel
-  {cat:'gitar', name:'Gitar 7 - Standard', notes:['B1','E2','A2','D3','G3','B3','E4']},
-  {cat:'gitar', name:'Gitar 7 - Drop A',   notes:['A1','E2','A2','D3','G3','B3','E4']},
+  {cat:'gitar', name:'Guitar 7 - Standard', notes:['B1','E2','A2','D3','G3','B3','E4']},
+  {cat:'gitar', name:'Guitar 7 - Drop A',   notes:['A1','E2','A2','D3','G3','B3','E4']},
   // Bass 4 Tel
   {cat:'bass', name:'Bass 4 - Standard',  notes:['E1','A1','D2','G2']},
   {cat:'bass', name:'Bass 4 - Drop D',    notes:['D1','A1','D2','G2']},
@@ -1091,14 +1124,14 @@ function renderModal() {
       </div>
       <div class="modal-cat-row">
         <button class="cat-btn" onclick="goCat('bass')">Bass</button>
-        <button class="cat-btn" onclick="goCat('gitar')">Gitar</button>
+        <button class="cat-btn" onclick="goCat('gitar')">Guitar</button>
         <button class="cat-btn" onclick="goCat('uke')">Ukulele</button>
       </div>`;
     return;
   }
 
   // Alt görünümler
-  const titles = { bass:'Bass', gitar:'Gitar', uke:'Ukulele' };
+  const titles = { bass:'Bass', gitar:'Guitar', uke:'Ukulele' };
   let body = '';
 
   if (modalView === 'bass') {
@@ -1113,8 +1146,8 @@ function renderModal() {
     const stringCounts = [6,7];
     const buttons = stringCounts.map(n => {
       const items = n === 6
-        ? TUNINGS.filter(t => t.cat==='gitar' && !t.name.startsWith('Gitar 7'))
-        : TUNINGS.filter(t => t.name.startsWith('Gitar 7'));
+        ? TUNINGS.filter(t => t.cat==='gitar' && !t.name.startsWith('Guitar 7'))
+        : TUNINGS.filter(t => t.name.startsWith('Guitar 7'));
       if (!items.length) return '';
       return `<button class="string-count-btn" onclick="showTunings('gitar',${n})">${n} Telli<span>${items.length} akort</span></button>`;
     }).join('');
@@ -1130,8 +1163,8 @@ function renderModal() {
       items = TUNINGS.filter(t => t.name.startsWith('Bass '+num));
     } else if (cat === 'gitar') {
       items = num === 6
-        ? TUNINGS.filter(t => t.cat==='gitar' && !t.name.startsWith('Gitar 7'))
-        : TUNINGS.filter(t => t.name.startsWith('Gitar 7'));
+        ? TUNINGS.filter(t => t.cat==='gitar' && !t.name.startsWith('Guitar 7'))
+        : TUNINGS.filter(t => t.name.startsWith('Guitar 7'));
     }
     body = renderTuningCards(items);
   }
@@ -1175,7 +1208,7 @@ function renderTuningCards(items) {
     // İsmi temizle: "Bass 4 - Standard" → "Standard"
     const cleanName = t.name
       .replace(/^Bass \d+ - /, '')
-      .replace(/^Gitar 7 - /, '');
+      .replace(/^Guitar 7 - /, '');
     return `<div class="tuning-card ${t.name===tuning.name?'sel':''}" onclick="selectTuning(${i})">
       <div class="tuning-card-name">${cleanName}</div>
       <div class="tuning-card-notes">${t.notes.join(' · ')}</div>
