@@ -27,7 +27,7 @@
 }
 
 /* TEMA: Kömür — saf siyah, sarı vurgu */
-body.theme-komur{
+.theme-page.theme-komur{
   --bg:#0a0a0a;--surface:#161616;--surface2:#1f1f1f;
   --border:#2a2a2a;--border2:#3a3a3a;
   --accent:#facc15;--amber:#fb923c;
@@ -35,7 +35,7 @@ body.theme-komur{
 }
 
 /* TEMA: Krem — açık kağıt, kahverengi/yeşil */
-body.theme-krem{
+.theme-page.theme-krem{
   --bg:#f5e9d3;--surface:#ebdcc1;--surface2:#e0cda8;
   --border:#c8b48f;--border2:#a8927a;
   --accent:#15803d;--amber:#a04b2a;
@@ -43,7 +43,7 @@ body.theme-krem{
 }
 
 /* TEMA: Mor Neon — koyu mor, neon pembe */
-body.theme-morNeon{
+.theme-page.theme-morNeon{
   --bg:#1a0c2e;--surface:#241338;--surface2:#2e1a47;
   --border:#3a1c5a;--border2:#4a2c6a;
   --accent:#f0abfc;--amber:#c026d3;
@@ -51,7 +51,7 @@ body.theme-morNeon{
 }
 
 /* TEMA: Orman — koyu yeşil, altın */
-body.theme-orman{
+.theme-page.theme-orman{
   --bg:#0d1f15;--surface:#152b1f;--surface2:#1e3a2a;
   --border:#234a35;--border2:#2a5a40;
   --accent:#fbbf24;--amber:#f97316;
@@ -66,19 +66,29 @@ body{
   overflow:hidden;
   padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);
   user-select:none;
-  transition: background 0.4s ease, color 0.4s ease;
 }
-#mainContent {
+#carouselContainer {
   flex: 1;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+#themeCarousel {
+  display: flex;
+  height: 100%;
+  width: 300%;
+  transform: translateX(-33.333%);
+  will-change: transform;
+}
+.theme-page {
+  width: 100vw;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  will-change: transform, opacity;
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.4s ease;
 }
-.slide-out-left { transform: translateX(-100%); opacity: 0; }
-.slide-out-right { transform: translateX(100%); opacity: 0; }
-.slide-in-left { transform: translateX(-100%); opacity: 0; transition: none !important; }
-.slide-in-right { transform: translateX(100%); opacity: 0; transition: none !important; }
 
 .app-header{
   padding: 16px 20px 4px;
@@ -291,52 +301,59 @@ body{
   </button>
 </div>
 
-<main id="mainContent">
-  <!-- STANDARD/CHROMATIC NOTE CARD -->
-  <div class="note-card" id="noteCard">
-    <div class="note-display">
-      <div class="note-letter" id="noteLetter">–</div>
-      <div class="note-octave" id="noteOctave"></div>
-    </div>
-    <div class="note-info">
-      <div class="note-freq" id="noteFreq">– Hz</div>
-      <div class="target-note" id="targetNote"></div>
-      <div class="manual-badge" id="manualBadge">● MANUAL</div>
-      <div class="in-tune-badge">✓ IN TUNE</div>
-    </div>
-  </div>
+<div id="carouselContainer">
+  <div id="themeCarousel">
+    <!-- PREV PAGE -->
+    <div id="page-prev" class="theme-page"></div>
+    
+    <!-- CURRENT PAGE -->
+    <div id="page-curr" class="theme-page">
+      <div class="note-card">
+        <div class="note-display">
+          <div class="note-letter">–</div>
+          <div class="note-octave"></div>
+        </div>
+        <div class="note-info">
+          <div class="note-freq">– Hz</div>
+          <div class="target-note"></div>
+          <div class="manual-badge">● MANUAL</div>
+          <div class="in-tune-badge">✓ IN TUNE</div>
+        </div>
+      </div>
 
-  <!-- MİKROTONAL KART -->
-  <div class="micro-card" id="microCard">
-    <div class="micro-left">
-      <div class="micro-note" id="microNote">–</div>
-      <div class="micro-perde" id="microPerde">Perde bekleniyor</div>
-    </div>
-    <div class="micro-right">
-      <div class="micro-koma" id="microKoma">–<sub>koma</sub></div>
-      <div class="micro-freq" id="microFreq">– Hz</div>
-      <div class="micro-dev" id="microDev">– ¢</div>
-      <div class="micro-intune">✓ DOĞRU MIKROTONA</div>
-    </div>
-  </div>
+      <div class="micro-card">
+        <div class="micro-left">
+          <div class="micro-note">–</div>
+          <div class="micro-perde">Perde bekleniyor</div>
+        </div>
+        <div class="micro-right">
+          <div class="micro-koma">–<sub>koma</sub></div>
+          <div class="micro-freq">– Hz</div>
+          <div class="micro-dev">– ¢</div>
+          <div class="micro-intune">✓ DOĞRU MIKROTONA</div>
+        </div>
+      </div>
 
-  <!-- GAUGE — KAYDIRILABİLİR ARAYÜZLER -->
-  <div class="gauge-section">
-    <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)" aria-label="Önceki">‹</button>
-    <div class="gauge-wrap" id="gaugeWrap">
-      <canvas id="gaugeCanvas"></canvas>
-    </div>
-    <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)" aria-label="Sonraki">›</button>
-  </div>
-  <div class="gauge-dots" id="gaugeDots" style="display:none;"></div>
+      <div class="gauge-section">
+        <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)" aria-label="Önceki">‹</button>
+        <div class="gauge-wrap">
+          <canvas class="gauge-canvas"></canvas>
+        </div>
+        <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)" aria-label="Sonraki">›</button>
+      </div>
 
-  <!-- CENTS -->
-  <div class="cent-row">
-    <span class="cent-side">♭ FLAT</span>
-    <span class="cent-val" id="centVal">– ¢</span>
-    <span class="cent-side">SHARP ♯</span>
+      <div class="cent-row">
+        <span class="cent-side">♭ FLAT</span>
+        <span class="cent-val">– ¢</span>
+        <span class="cent-side">SHARP ♯</span>
+      </div>
+    </div>
+
+    <!-- NEXT PAGE -->
+    <div id="page-next" class="theme-page"></div>
   </div>
-</main>
+</div>
+<div class="gauge-dots" id="gaugeDots" style="display:none;"></div>
 
 <!-- STRINGS -->
 <div id="stringsSection" style="display:none;">
@@ -620,7 +637,7 @@ function tick() {
   if (level < 0.008) {
     pitchData = null; microData = null; closestStr = manualStr;
     needleCents += (0 - needleCents) * 0.1;
-    updateUI(); drawGauge(); return;
+    updateUI('page-curr'); drawAllVisible(); return;
   }
 
   const rawFreq = yin(timeBuf, audioCtx.sampleRate);
@@ -650,26 +667,34 @@ function tick() {
     needleCents += (0 - needleCents) * 0.08;
   }
 
-  updateUI(); drawGauge();
+  updateUI('page-curr');
+  if (isDragging || isTransitioning) {
+    updateUI('page-prev');
+    updateUI('page-next');
+  }
+  drawAllVisible();
 }
 
 // ===== UI =====
-function updateUI() {
+function updateUI(pageId = 'page-curr') {
+  const page = document.getElementById(pageId);
+  if (!page) return;
+
   if (mode === 'microtonal') {
     const md = microData;
-    const card = document.getElementById('microCard');
+    const card = page.querySelector('.micro-card');
     card.className = 'micro-card show' + (md?.inTune ? ' in-tune' : '');
-    document.getElementById('microNote').textContent = md?.note ?? '–';
-    document.getElementById('microPerde').textContent = md ? md.perdeAdı + ' (' + md.komaKodu + ')' : 'Perde bekleniyor';
-    document.getElementById('microKoma').innerHTML = md ? md.koma+'<sub>koma</sub>' : '–<sub>koma</sub>';
-    document.getElementById('microFreq').textContent = md ? md.frequency.toFixed(2)+' Hz' : '– Hz';
+    page.querySelector('.micro-note').textContent = md?.note ?? '–';
+    page.querySelector('.micro-perde').textContent = md ? md.perdeAdı + ' (' + md.komaKodu + ')' : 'Perde bekleniyor';
+    page.querySelector('.micro-koma').innerHTML = md ? md.koma+'<sub>koma</sub>' : '–<sub>koma</sub>';
+    page.querySelector('.micro-freq').textContent = md ? md.frequency.toFixed(2)+' Hz' : '– Hz';
     const dev = md?.deviation ?? null;
-    const devEl = document.getElementById('microDev');
+    const devEl = page.querySelector('.micro-dev');
     devEl.textContent = dev !== null ? (dev >= 0 ? '+' : '')+dev+' ¢' : '– ¢';
     devEl.style.color = md?.inTune ? 'var(--accent)' : 'var(--text2)';
 
     // Cent göstergesi
-    const centEl = document.getElementById('centVal');
+    const centEl = page.querySelector('.cent-val');
     centEl.textContent = dev !== null ? (dev >= 0 ? '+' : '')+dev+' ¢' : '– ¢';
     centEl.className = 'cent-val' + (md?.inTune ? ' in-tune' : '');
     return;
@@ -677,24 +702,26 @@ function updateUI() {
 
   // Standard / Chromatic
   const inTune = pitchData?.inTune ?? false;
-  document.getElementById('noteCard').className = 'note-card' + (inTune ? ' in-tune' : '');
-  document.getElementById('noteLetter').textContent = pitchData?.note ?? '–';
-  document.getElementById('noteOctave').textContent = pitchData?.octave ?? '';
-  document.getElementById('noteFreq').textContent = pitchData ? pitchData.frequency.toFixed(2)+' Hz' : '– Hz';
+  page.querySelector('.note-card').className = 'note-card' + (inTune ? ' in-tune' : '');
+  page.querySelector('.note-letter').textContent = pitchData?.note ?? '–';
+  page.querySelector('.note-octave').textContent = pitchData?.octave ?? '';
+  page.querySelector('.note-freq').textContent = pitchData ? pitchData.frequency.toFixed(2)+' Hz' : '– Hz';
 
   const c = pitchData?.cents ?? null;
-  const cv = document.getElementById('centVal');
+  const cv = page.querySelector('.cent-val');
   cv.textContent = c !== null ? (c >= 0 ? '+' : '')+c+' ¢' : '– ¢';
   cv.className = 'cent-val' + (inTune ? ' in-tune' : '');
 
-  const tEl = document.getElementById('targetNote');
+  const tEl = page.querySelector('.target-note');
   if (mode === 'standard' && closestStr !== null) {
     const tn = tuning.notes[closestStr];
     tEl.innerHTML = 'Hedef: <span>'+tn+'</span> · '+noteToFreq(tn).toFixed(1)+' Hz';
   } else { tEl.innerHTML = ''; }
 
-  document.getElementById('manualBadge').className = 'manual-badge'+(manualStr!==null&&mode==='standard'?' show':'');
+  const mb = page.querySelector('.manual-badge');
+  if (mb) mb.className = 'manual-badge'+(manualStr!==null&&mode==='standard'?' show':'');
 
+  // String itemları sadece page-curr'da veya genel listen varsa güncelle
   document.querySelectorAll('.string-item').forEach((el,i) => {
     const isActive = i === closestStr && mode === 'standard';
     const isInTune = isActive && pitchData?.inTune;
@@ -715,10 +742,11 @@ const GAUGES = [
 ];
 let currentGauge = 0;
 
-function getCanvasCtx() {
-  const canvas = document.getElementById('gaugeCanvas');
+function getCanvasCtx(canvas) {
+  if (!canvas) return null;
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.offsetWidth, H = W * 0.58;
+  if (W === 0) return null;
   if (canvas.width !== W*dpr) { canvas.width = W*dpr; canvas.height = H*dpr; }
   const ctx = canvas.getContext('2d');
   ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -726,29 +754,25 @@ function getCanvasCtx() {
   return { canvas, ctx, W, H };
 }
 
-function drawGauge() {
-  const style = GAUGES[currentGauge].id;
-  // Tema body class'ı uygula
-  const themeIds = ['komur','krem','morNeon','orman'];
-  document.body.className = document.body.className
-    .split(' ').filter(c => !c.startsWith('theme-')).join(' ').trim();
-  if (themeIds.includes(style)) {
-    document.body.classList.add('theme-' + style);
-  }
+function drawGauge(gaugeIdx, canvasEl) {
+  if (!canvasEl) return;
+  const style = GAUGES[gaugeIdx].id;
+  const res = getCanvasCtx(canvasEl);
+  if (!res) return;
+  const { ctx, W, H } = res;
 
-  if (style === 'klasik') drawKlasik();
-  else if (style === 'klasikBuyuk') drawKlasikBuyuk();
-  else if (style === 'komur') drawKlasikTema('komur');
-  else if (style === 'krem') drawKlasikTema('krem');
-  else if (style === 'morNeon') drawKlasikTema('morNeon');
-  else if (style === 'orman') drawKlasikTema('orman');
-  else if (style === 'minimal') drawMinimal();
-  else if (style === 'led') drawLED();
+  if (style === 'klasik') drawKlasik(ctx, W, H);
+  else if (style === 'klasikBuyuk') drawKlasikBuyuk(ctx, W, H);
+  else if (style === 'komur') drawKlasikTema('komur', ctx, W, H);
+  else if (style === 'krem') drawKlasikTema('krem', ctx, W, H);
+  else if (style === 'morNeon') drawKlasikTema('morNeon', ctx, W, H);
+  else if (style === 'orman') drawKlasikTema('orman', ctx, W, H);
+  else if (style === 'minimal') drawMinimal(ctx, W, H);
+  else if (style === 'led') drawLED(ctx, W, H);
 }
 
 // 1. KLASİK — yarım daire gauge (orijinal)
-function drawKlasik() {
-  const { ctx, W, H } = getCanvasCtx();
+function drawKlasik(ctx, W, H) {
   const cx = W/2, cy = H-14, R = Math.min(W*.46,H*.9);
 
   ctx.beginPath(); ctx.arc(cx,cy,R,Math.PI,2*Math.PI);
@@ -789,8 +813,7 @@ function drawKlasik() {
 }
 
 // 1B. KLASİK BÜYÜK — okunaklı versiyon: kalın çizgiler, büyük rakamlar, yüksek kontrast
-function drawKlasikBuyuk() {
-  const { ctx, W, H } = getCanvasCtx();
+function drawKlasikBuyuk(ctx, W, H) {
   const cx = W/2, cy = H-14, R = Math.min(W*.46, H*.9);
   const inTune = pitchData?.inTune || microData?.inTune || false;
 
@@ -852,7 +875,7 @@ function drawKlasikBuyuk() {
 }
 
 // KLASİK + TEMA — orijinal yarım daire, farklı renk paletlerinde
-function drawKlasikTema(temaId) {
+function drawKlasikTema(temaId, ctx, W, H) {
   const themes = {
     komur: {
       bg: null, // canvas zemini saf siyah; body zemini değişmez ama canvas dolduralım
@@ -904,7 +927,7 @@ function drawKlasikTema(temaId) {
     },
   };
   const tema = themes[temaId];
-  const { ctx, W, H } = getCanvasCtx();
+  const cx = W/2, cy = H-14, R = Math.min(W*.46, H*.9);
 
   // Tema arka planı
   if (tema.bg) {
@@ -959,8 +982,7 @@ function drawKlasikTema(temaId) {
 }
 
 // 2. MİNİMALİST — yatay ince çizgi, kayan ibre
-function drawMinimal() {
-  const { ctx, W, H } = getCanvasCtx();
+function drawMinimal(ctx, W, H) {
   const cy = H/2;
   const padX = 30;
   const lineW = W - padX*2;
@@ -1008,8 +1030,7 @@ function drawMinimal() {
 }
 
 // 3. DİJİTAL LED — strob şerit, soldan-sağa LED'ler
-function drawLED() {
-  const { ctx, W, H } = getCanvasCtx();
+function drawLED(ctx, W, H) {
   const cy = H/2;
   const padX = 24;
   const ledCount = 21; // -50..+50, her 5 cent
@@ -1067,39 +1088,64 @@ function drawLED() {
   });
 }
 
-// ===== ARAYÜZ KAYDIRMA =====
-let isTransitioning = false;
+// ===== CAROUSEL LOGIC & SWIPE =====
+let isDragging = false;
+let startX = 0;
+let currentPos = 0;
+let animationID = 0;
+
+function initCarousel() {
+  const currContent = document.getElementById('page-curr').innerHTML;
+  document.getElementById('page-prev').innerHTML = currContent;
+  document.getElementById('page-next').innerHTML = currContent;
+  updateCarouselBuffer();
+}
+
+function updateCarouselBuffer() {
+  const n = GAUGES.length;
+  const prevIdx = (currentGauge - 1 + n) % n;
+  const nextIdx = (currentGauge + 1 + n) % n;
+
+  setPageTheme('page-prev', prevIdx);
+  setPageTheme('page-curr', currentGauge);
+  setPageTheme('page-next', nextIdx);
+}
+
+function setPageTheme(id, gaugeIdx) {
+  const page = document.getElementById(id);
+  const style = GAUGES[gaugeIdx].id;
+  page.className = 'theme-page ' + 'theme-' + style;
+  updateUI(id);
+}
+
+function drawAllVisible() {
+  const n = GAUGES.length;
+  drawGauge((currentGauge - 1 + n) % n, document.querySelector('#page-prev .gauge-canvas'));
+  drawGauge(currentGauge, document.querySelector('#page-curr .gauge-canvas'));
+  drawGauge((currentGauge + 1 + n) % n, document.querySelector('#page-next .gauge-canvas'));
+}
+
 function changeGauge(dir) {
   if (isTransitioning) return;
-  const n = GAUGES.length;
-  const nextIdx = (currentGauge + dir + n) % n;
-  if (nextIdx === currentGauge) return;
+  moveCarousel(dir);
+}
 
-  const content = document.getElementById('mainContent');
+function moveCarousel(dir) {
+  const carousel = document.getElementById('themeCarousel');
   isTransitioning = true;
-
-  // Slide out
-  content.classList.add(dir > 0 ? 'slide-out-left' : 'slide-out-right');
-
+  carousel.style.transition = 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)';
+  const targetX = dir > 0 ? -66.666 : 0;
+  carousel.style.transform = `translateX(${targetX}%)`;
+  
   setTimeout(() => {
-    currentGauge = nextIdx;
+    const n = GAUGES.length;
+    currentGauge = (currentGauge + dir + n) % n;
+    carousel.style.transition = 'none';
+    carousel.style.transform = 'translateX(-33.333%)';
+    updateCarouselBuffer();
     renderGaugeDots();
-    drawGauge();
-
-    // Teleport to other side
-    content.classList.remove('slide-out-left', 'slide-out-right');
-    content.classList.add(dir > 0 ? 'slide-in-right' : 'slide-in-left');
-
-    // Trigger reflow
-    void content.offsetHeight;
-
-    // Slide in
-    content.classList.remove('slide-in-right', 'slide-in-left');
-    
-    setTimeout(() => {
-      isTransitioning = false;
-    }, 300);
-  }, 300);
+    isTransitioning = false;
+  }, 400);
 }
 
 function renderGaugeDots() {
@@ -1113,34 +1159,61 @@ function goToGauge(i) {
   changeGauge(i > currentGauge ? 1 : -1);
 }
 
-// Klavye okları
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') changeGauge(-1);
-  else if (e.key === 'ArrowRight') changeGauge(1);
-});
-
-// Touch swipe
+// Interactive Swipe
 (() => {
-  let startX = 0, startY = 0, tracking = false;
-  window.addEventListener('touchstart', e => {
-    if (e.touches.length !== 1 || isTransitioning) return;
-    // Input elementleri veya modal açıkken swipe'ı engelle
-    if (e.target.closest('button, .tuning-card, .modal-box, input')) return;
-    
-    startX = e.touches[0].clientX; startY = e.touches[0].clientY;
-    tracking = true;
-  }, {passive:true});
+  const carousel = document.getElementById('themeCarousel');
+  let startPos = 0;
   
-  window.addEventListener('touchend', e => {
-    if (!tracking) return;
-    tracking = false;
-    const dx = (e.changedTouches[0].clientX - startX);
-    const dy = (e.changedTouches[0].clientY - startY);
-    // Yatay swipe kontrolü
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.2) {
-      changeGauge(dx < 0 ? 1 : -1);
+  window.addEventListener('touchstart', touchStart, {passive:true});
+  window.addEventListener('touchend', touchEnd);
+  window.addEventListener('touchmove', touchMove, {passive:false});
+
+  function touchStart(e) {
+    if (isTransitioning) return;
+    if (e.target.closest('button, .tuning-card, .modal-box, input, .gauge-arrow')) return;
+    
+    isDragging = true;
+    startPos = e.touches[0].clientX;
+    currentPos = startPos;
+    carousel.style.transition = 'none';
+    animationID = requestAnimationFrame(animation);
+  }
+
+  function touchMove(e) {
+    if (!isDragging) return;
+    currentPos = e.touches[0].clientX;
+    const diff = currentPos - startPos;
+    if (Math.abs(diff) > 10 && e.cancelable) e.preventDefault();
+  }
+
+  function touchEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    cancelAnimationFrame(animationID);
+
+    const diff = currentPos - startPos;
+    const threshold = window.innerWidth / 4;
+
+    if (diff < -threshold) moveCarousel(1);
+    else if (diff > threshold) moveCarousel(-1);
+    else {
+      isTransitioning = true;
+      carousel.style.transition = 'transform 0.3s ease-out';
+      carousel.style.transform = 'translateX(-33.333%)';
+      setTimeout(() => { isTransitioning = false; }, 300);
     }
-  }, {passive:true});
+    startPos = 0;
+    currentPos = 0;
+  }
+
+  function animation() {
+    if (isDragging) {
+      const diff = currentPos - startPos;
+      const percentage = (diff / window.innerWidth) * 33.333;
+      carousel.style.transform = `translateX(${ -33.333 + percentage }%)`;
+      requestAnimationFrame(animation);
+    }
+  }
 })();
 
 // ===== TELLER =====
@@ -1293,7 +1366,7 @@ function selectChromatic() {
   document.getElementById('stringsSection').style.display = 'none';
   document.getElementById('tuningChip').textContent = '▼ Chromatic';
   document.getElementById('tuningModal').classList.remove('open');
-  updateUI(); drawGauge();
+  updateCarouselBuffer();
 }
 
 function selectTuning(i) {
@@ -1306,15 +1379,19 @@ function selectTuning(i) {
     pitchData = null; microData = null;
   }
   renderStrings();
-  updateUI(); drawGauge();
+  updateCarouselBuffer();
 }
 
 // ===== BAŞLAT =====
+initCarousel();
 renderStrings();
 renderGaugeDots();
-drawGauge();
 startAudio();
-    window.addEventListener('resize', drawGauge);
+window.addEventListener('resize', () => drawAllVisible());
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') changeGauge(-1);
+  else if (e.key === 'ArrowRight') changeGauge(1);
+});
 
     // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
