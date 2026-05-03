@@ -76,10 +76,13 @@ body{
 #themeCarousel {
   display: flex;
   height: 100%;
-  width: 300%;
-  transform: translateX(-33.333%);
-  will-change: transform;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
+#themeCarousel::-webkit-scrollbar { display: none; }
 .theme-page {
   width: 100vw;
   flex-shrink: 0;
@@ -87,6 +90,7 @@ body{
   flex-direction: column;
   background: var(--bg);
   color: var(--text);
+  scroll-snap-align: start;
   transition: background 0.4s ease;
 }
 
@@ -303,80 +307,10 @@ body{
 
 <div id="carouselContainer">
   <div id="themeCarousel">
-    <!-- PREV PAGE -->
-    <div id="page-prev" class="theme-page"></div>
-    
-    <!-- CURRENT PAGE -->
-    <div id="page-curr" class="theme-page">
-      <div class="note-card">
-        <div class="note-display">
-          <div class="note-letter">–</div>
-          <div class="note-octave"></div>
-        </div>
-        <div class="note-info">
-          <div class="note-freq">– Hz</div>
-          <div class="target-note"></div>
-          <div class="manual-badge">● MANUAL</div>
-          <div class="in-tune-badge">✓ IN TUNE</div>
-        </div>
-      </div>
-
-      <div class="micro-card">
-        <div class="micro-left">
-          <div class="micro-note">–</div>
-          <div class="micro-perde">Perde bekleniyor</div>
-        </div>
-        <div class="micro-right">
-          <div class="micro-koma">–<sub>koma</sub></div>
-          <div class="micro-freq">– Hz</div>
-          <div class="micro-dev">– ¢</div>
-          <div class="micro-intune">✓ DOĞRU MIKROTONA</div>
-        </div>
-      </div>
-
-      <div class="gauge-section">
-        <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)" aria-label="Önceki">‹</button>
-        <div class="gauge-wrap">
-          <canvas class="gauge-canvas"></canvas>
-        </div>
-        <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)" aria-label="Sonraki">›</button>
-      </div>
-
-      <div class="cent-row">
-        <span class="cent-side">♭ FLAT</span>
-        <span class="cent-val">– ¢</span>
-        <span class="cent-side">SHARP ♯</span>
-      </div>
-
-      <!-- STRINGS -->
-      <div class="strings-section" style="display:none;">
-        <div class="strings-wrap">
-          <div class="strings-list"></div>
-        </div>
-      </div>
-      <div class="tuning-row">
-        <button class="tuning-chip" onclick="openTuning()">▼ Chromatic</button>
-      </div>
-
-      <!-- A4 -->
-      <div class="a4-row">
-        <button class="a4-btn" onclick="changeA4(-1)">−</button>
-        <span class="a4-label">A4 = 440 Hz</span>
-        <button class="a4-btn" onclick="changeA4(1)">+</button>
-      </div>
-
-      <!-- MIC -->
-      <div class="mic-row">
-        <span class="mic-lbl">MIC</span>
-        <div class="mic-track"><div class="mic-bar"></div></div>
-        <span class="mic-db">– dB</span>
-      </div>
-    </div>
-
-    <!-- NEXT PAGE -->
-    <div id="page-next" class="theme-page"></div>
+    <!-- Pages will be generated dynamically by JS -->
   </div>
 </div>
+<div class="gauge-dots" id="gaugeDots"></div>
 
 <!-- TUNING MODAL -->
 <div class="modal-bg" id="tuningModal" onclick="closeTuning(event)">
@@ -643,50 +577,57 @@ function tick() {
     if (md) md.textContent = db > -60 ? db.toFixed(1)+' dB' : '–∞ dB';
   };
 
+  const carousel = document.getElementById('themeCarousel');
+  const scrollLeft = carousel.scrollLeft;
+  const W = window.innerWidth;
   updateMic('page-curr');
-  if (isDragging || isTransitioning) {
-    updateMic('page-prev');
-    updateMic('page-next');
-  }
+  // Update all visible mics
+  GAUGES.forEach((_, i) => {
+    const offset = i * W;
+    if (Math.abs(offset - scrollLeft) < W * 1.2) {
+      updateMic(`page-${i}`);
+    }
+  });
 
   if (level < 0.008) {
     pitchData = null; microData = null; closestStr = manualStr;
     needleCents += (0 - needleCents) * 0.1;
-    updateUI('page-curr'); drawAllVisible(); return;
-  }
-
-  const rawFreq = yin(timeBuf, audioCtx.sampleRate);
-  const freq = rawFreq > 20 && rawFreq < 5000 ? smoothFreq(rawFreq) : -1;
-
-  if (freq > 20 && freq < 5000) {
-    if (mode === 'microtonal') {
-      microData = microtonalDetect(freq);
-      pitchData = null; closestStr = null;
-      const dev = microData?.deviation ?? 0;
-      needleCents += (Math.max(-50, Math.min(50, dev*4)) - needleCents) * 0.12;
-    } else if (mode === 'chromatic') {
-      pitchData = freqToData(freq, null);
-      microData = null; closestStr = null;
-      needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
-    } else {
-      const autoStr = findClosest(freq);
-      closestStr = manualStr !== null ? manualStr : autoStr;
-      const tf = noteToFreq(tuning.notes[closestStr]);
-      pitchData = freqToData(freq, tf);
-      microData = null;
-      needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
-    }
   } else {
-    pitchData = null; microData = null;
-    closestStr = mode === 'standard' && manualStr !== null ? manualStr : null;
-    needleCents += (0 - needleCents) * 0.08;
+    const rawFreq = yin(timeBuf, audioCtx.sampleRate);
+    const freq = rawFreq > 20 && rawFreq < 5000 ? smoothFreq(rawFreq) : -1;
+
+    if (freq > 20 && freq < 5000) {
+      if (mode === 'microtonal') {
+        microData = microtonalDetect(freq);
+        pitchData = null; closestStr = null;
+        const dev = microData?.deviation ?? 0;
+        needleCents += (Math.max(-50, Math.min(50, dev*4)) - needleCents) * 0.12;
+      } else if (mode === 'chromatic') {
+        pitchData = freqToData(freq, null);
+        microData = null; closestStr = null;
+        needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
+      } else {
+        const autoStr = findClosest(freq);
+        closestStr = manualStr !== null ? manualStr : autoStr;
+        const tf = noteToFreq(tuning.notes[closestStr]);
+        pitchData = freqToData(freq, tf);
+        microData = null;
+        needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
+      }
+    } else {
+      pitchData = null; microData = null;
+      closestStr = mode === 'standard' && manualStr !== null ? manualStr : null;
+      needleCents += (0 - needleCents) * 0.08;
+    }
   }
 
-  updateUI('page-curr');
-  if (isDragging || isTransitioning) {
-    updateUI('page-prev');
-    updateUI('page-next');
-  }
+  GAUGES.forEach((_, i) => {
+    const offset = i * W;
+    if (Math.abs(offset - scrollLeft) < W * 1.2) {
+      updateUI(`page-${i}`);
+    }
+  });
+
   drawAllVisible();
 }
 
@@ -1110,64 +1051,96 @@ function drawLED(ctx, W, H) {
   });
 }
 
-// ===== CAROUSEL LOGIC & SWIPE =====
-let isDragging = false;
-let startX = 0;
-let currentPos = 0;
-let animationID = 0;
-
-function initCarousel() {
-  const currContent = document.getElementById('page-curr').innerHTML;
-  document.getElementById('page-prev').innerHTML = currContent;
-  document.getElementById('page-next').innerHTML = currContent;
-  updateCarouselBuffer();
-}
-
 function updateCarouselBuffer() {
-  const n = GAUGES.length;
-  const prevIdx = (currentGauge - 1 + n) % n;
-  const nextIdx = (currentGauge + 1 + n) % n;
-
-  setPageTheme('page-prev', prevIdx);
-  setPageTheme('page-curr', currentGauge);
-  setPageTheme('page-next', nextIdx);
+  GAUGES.forEach((_, i) => updateUI(`page-${i}`));
 }
 
-function setPageTheme(id, gaugeIdx) {
-  const page = document.getElementById(id);
-  const style = GAUGES[gaugeIdx].id;
-  page.className = 'theme-page ' + 'theme-' + style;
-  updateUI(id);
+// ===== CAROUSEL LOGIC (Native Scroll) =====
+function initCarousel() {
+  const container = document.getElementById('themeCarousel');
+  const template = `
+    <div class="note-card">
+      <div class="note-display">
+        <div class="note-letter">–</div>
+        <div class="note-octave"></div>
+      </div>
+      <div class="note-info">
+        <div class="note-freq">– Hz</div>
+        <div class="target-note"></div>
+        <div class="manual-badge">● MANUAL</div>
+        <div class="in-tune-badge">✓ IN TUNE</div>
+      </div>
+    </div>
+    <div class="micro-card">
+      <div class="micro-left"><div class="micro-note">–</div><div class="micro-perde">Perde bekleniyor</div></div>
+      <div class="micro-right">
+        <div class="micro-koma">–<sub>koma</sub></div>
+        <div class="micro-freq">– Hz</div>
+        <div class="micro-dev">– ¢</div>
+        <div class="micro-intune">✓ DOĞRU MIKROTONA</div>
+      </div>
+    </div>
+    <div class="gauge-section">
+      <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)">‹</button>
+      <div class="gauge-wrap"><canvas class="gauge-canvas"></canvas></div>
+      <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)">›</button>
+    </div>
+    <div class="cent-row">
+      <span class="cent-side">♭ FLAT</span><span class="cent-val">– ¢</span><span class="cent-side">SHARP ♯</span>
+    </div>
+    <div class="strings-section" style="display:none;">
+      <div class="strings-wrap"><div class="strings-list"></div></div>
+    </div>
+    <div class="tuning-row"><button class="tuning-chip" onclick="openTuning()">▼ Chromatic</button></div>
+    <div class="a4-row">
+      <button class="a4-btn" onclick="changeA4(-1)">−</button><span class="a4-label">A4 = 440 Hz</span><button class="a4-btn" onclick="changeA4(1)">+</button>
+    </div>
+    <div class="mic-row">
+      <span class="mic-lbl">MIC</span><div class="mic-track"><div class="mic-bar"></div></div><span class="mic-db">– dB</span>
+    </div>
+  `;
+
+  container.innerHTML = GAUGES.map((g, i) => `
+    <div id="page-${i}" class="theme-page theme-${g.id}">
+      ${template}
+    </div>
+  `).join('');
+
+  container.addEventListener('scroll', () => {
+    const idx = Math.round(container.scrollLeft / window.innerWidth);
+    if (idx !== currentGauge) {
+      currentGauge = idx;
+      renderGaugeDots();
+    }
+  });
+
+  // Initial draw and UI
+  GAUGES.forEach((_, i) => updateUI(`page-${i}`));
+  drawAllVisible();
 }
 
 function drawAllVisible() {
-  const n = GAUGES.length;
-  drawGauge((currentGauge - 1 + n) % n, document.querySelector('#page-prev .gauge-canvas'));
-  drawGauge(currentGauge, document.querySelector('#page-curr .gauge-canvas'));
-  drawGauge((currentGauge + 1 + n) % n, document.querySelector('#page-next .gauge-canvas'));
+  const carousel = document.getElementById('themeCarousel');
+  if (!carousel) return;
+  const scrollLeft = carousel.scrollLeft;
+  const W = window.innerWidth;
+
+  GAUGES.forEach((_, i) => {
+    const page = document.getElementById(`page-${i}`);
+    if (!page) return;
+    const canvas = page.querySelector('.gauge-canvas');
+    const offset = i * W;
+    // Görünür veya yakınsa çiz
+    if (Math.abs(offset - scrollLeft) < W * 1.5) {
+      drawGauge(i, canvas);
+    }
+  });
 }
 
 function changeGauge(dir) {
-  if (isTransitioning) return;
-  moveCarousel(dir);
-}
-
-function moveCarousel(dir) {
-  const carousel = document.getElementById('themeCarousel');
-  isTransitioning = true;
-  carousel.style.transition = 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)';
-  const targetX = dir > 0 ? -66.666 : 0;
-  carousel.style.transform = `translateX(${targetX}%)`;
-  
-  setTimeout(() => {
-    const n = GAUGES.length;
-    currentGauge = (currentGauge + dir + n) % n;
-    carousel.style.transition = 'none';
-    carousel.style.transform = 'translateX(-33.333%)';
-    updateCarouselBuffer();
-    renderGaugeDots();
-    isTransitioning = false;
-  }, 400);
+  const n = GAUGES.length;
+  const next = (currentGauge + dir + n) % n;
+  goToGauge(next);
 }
 
 function renderGaugeDots() {
@@ -1177,66 +1150,9 @@ function renderGaugeDots() {
 }
 
 function goToGauge(i) {
-  if (isTransitioning || i === currentGauge) return;
-  changeGauge(i > currentGauge ? 1 : -1);
+  const container = document.getElementById('themeCarousel');
+  container.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' });
 }
-
-// Interactive Swipe
-(() => {
-  const carousel = document.getElementById('themeCarousel');
-  let startPos = 0;
-  
-  window.addEventListener('touchstart', touchStart, {passive:true});
-  window.addEventListener('touchend', touchEnd);
-  window.addEventListener('touchmove', touchMove, {passive:false});
-
-  function touchStart(e) {
-    if (isTransitioning) return;
-    if (e.target.closest('button, .tuning-card, .modal-box, input, .gauge-arrow')) return;
-    
-    isDragging = true;
-    startPos = e.touches[0].clientX;
-    currentPos = startPos;
-    carousel.style.transition = 'none';
-    animationID = requestAnimationFrame(animation);
-  }
-
-  function touchMove(e) {
-    if (!isDragging) return;
-    currentPos = e.touches[0].clientX;
-    const diff = currentPos - startPos;
-    if (Math.abs(diff) > 10 && e.cancelable) e.preventDefault();
-  }
-
-  function touchEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    cancelAnimationFrame(animationID);
-
-    const diff = currentPos - startPos;
-    const threshold = window.innerWidth / 4;
-
-    if (diff < -threshold) moveCarousel(1);
-    else if (diff > threshold) moveCarousel(-1);
-    else {
-      isTransitioning = true;
-      carousel.style.transition = 'transform 0.3s ease-out';
-      carousel.style.transform = 'translateX(-33.333%)';
-      setTimeout(() => { isTransitioning = false; }, 300);
-    }
-    startPos = 0;
-    currentPos = 0;
-  }
-
-  function animation() {
-    if (isDragging) {
-      const diff = currentPos - startPos;
-      const percentage = (diff / window.innerWidth) * 33.333;
-      carousel.style.transform = `translateX(${ -33.333 + percentage }%)`;
-      requestAnimationFrame(animation);
-    }
-  }
-})();
 
 // ===== TELLER =====
 function renderStrings(pageId = 'page-curr') {
