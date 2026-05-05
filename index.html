@@ -27,7 +27,7 @@
 }
 
 /* TEMA: Kömür — saf siyah, sarı vurgu */
-.theme-page.theme-komur{
+body.theme-komur{
   --bg:#0a0a0a;--surface:#161616;--surface2:#1f1f1f;
   --border:#2a2a2a;--border2:#3a3a3a;
   --accent:#facc15;--amber:#fb923c;
@@ -35,7 +35,7 @@
 }
 
 /* TEMA: Krem — açık kağıt, kahverengi/yeşil */
-.theme-page.theme-krem{
+body.theme-krem{
   --bg:#f5e9d3;--surface:#ebdcc1;--surface2:#e0cda8;
   --border:#c8b48f;--border2:#a8927a;
   --accent:#15803d;--amber:#a04b2a;
@@ -43,7 +43,7 @@
 }
 
 /* TEMA: Mor Neon — koyu mor, neon pembe */
-.theme-page.theme-morNeon{
+body.theme-morNeon{
   --bg:#1a0c2e;--surface:#241338;--surface2:#2e1a47;
   --border:#3a1c5a;--border2:#4a2c6a;
   --accent:#f0abfc;--amber:#c026d3;
@@ -51,7 +51,7 @@
 }
 
 /* TEMA: Orman — koyu yeşil, altın */
-.theme-page.theme-orman{
+body.theme-orman{
   --bg:#0d1f15;--surface:#152b1f;--surface2:#1e3a2a;
   --border:#234a35;--border2:#2a5a40;
   --accent:#fbbf24;--amber:#f97316;
@@ -66,32 +66,6 @@ body{
   overflow:hidden;
   padding-top:var(--safe-top);padding-bottom:var(--safe-bottom);
   user-select:none;
-}
-#carouselContainer {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-}
-#themeCarousel {
-  display: flex;
-  height: 100%;
-  width: 100%;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-#themeCarousel::-webkit-scrollbar { display: none; }
-.theme-page {
-  width: 100vw;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg);
-  color: var(--text);
-  scroll-snap-align: start;
-  transition: background 0.4s ease;
 }
 
 .app-header{
@@ -114,27 +88,6 @@ body{
 .logo-tuner {
   color: #fff8e7; /* Evren Rengi (Cosmic Latte) */
 }
-#installBtn {
-  margin-left: auto;
-  padding: 8px 16px;
-  background: #3b82f6;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  display: none;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  transition: all 0.2s;
-  font-family: 'Inter', sans-serif;
-  text-transform: uppercase;
-}
-#installBtn:active { transform: scale(0.95); }
-#installBtn svg { width: 14px; height: 14px; }
 
 /* MODE TOGGLE */
 .mode-toggle{
@@ -157,7 +110,7 @@ body{
   margin:12px 16px 0;border-radius:18px;
   border:1px solid var(--border2);background:var(--surface);
   padding:18px 22px;display:flex;align-items:center;justify-content:space-between;
-  flex-shrink:0;min-height:110px;transition:all 0.4s ease;
+  flex-shrink:0;min-height:110px;transition:border-color .3s,box-shadow .3s;
 }
 .note-card.in-tune{border-color:rgba(74,222,128,.35);box-shadow:0 0 24px rgba(74,222,128,.08)}
 .note-display{display:flex;align-items:flex-end;gap:6px}
@@ -179,7 +132,7 @@ body{
   margin:12px 16px 0;border-radius:18px;
   border:1px solid var(--border2);background:var(--surface);
   padding:18px 22px;display:none;align-items:center;justify-content:space-between;
-  flex-shrink:0;min-height:110px;transition:all 0.4s ease;
+  flex-shrink:0;min-height:110px;transition:border-color .3s,box-shadow .3s;
 }
 .micro-card.show{display:flex}
 .micro-card.in-tune{border-color:rgba(59,130,246,.35);box-shadow:0 0 24px rgba(59,130,246,.08)}
@@ -299,18 +252,76 @@ body{
 
 <div class="app-header">
   <h1 class="logo"><span class="logo-highlight">Y</span><span class="logo-tuner">Tuner</span></h1>
-  <button id="installBtn">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-    YÜKLE
-  </button>
 </div>
 
-<div id="carouselContainer">
-  <div id="themeCarousel">
-    <!-- Pages will be generated dynamically by JS -->
+<!-- STANDARD/CHROMATIC NOTE CARD -->
+<div class="note-card" id="noteCard">
+  <div class="note-display">
+    <div class="note-letter" id="noteLetter">–</div>
+    <div class="note-octave" id="noteOctave"></div>
+  </div>
+  <div class="note-info">
+    <div class="note-freq" id="noteFreq">– Hz</div>
+    <div class="target-note" id="targetNote"></div>
+    <div class="manual-badge" id="manualBadge">● MANUAL</div>
+    <div class="in-tune-badge">✓ IN TUNE</div>
   </div>
 </div>
-<div class="gauge-dots" id="gaugeDots"></div>
+
+<!-- MİKROTONAL KART -->
+<div class="micro-card" id="microCard">
+  <div class="micro-left">
+    <div class="micro-note" id="microNote">–</div>
+    <div class="micro-perde" id="microPerde">Perde bekleniyor</div>
+  </div>
+  <div class="micro-right">
+    <div class="micro-koma" id="microKoma">–<sub>koma</sub></div>
+    <div class="micro-freq" id="microFreq">– Hz</div>
+    <div class="micro-dev" id="microDev">– ¢</div>
+    <div class="micro-intune">✓ DOĞRU MIKROTONA</div>
+  </div>
+</div>
+
+<!-- GAUGE — KAYDIRILABİLİR ARAYÜZLER -->
+<div class="gauge-section">
+  <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)" aria-label="Önceki">‹</button>
+  <div class="gauge-wrap" id="gaugeWrap">
+    <canvas id="gaugeCanvas"></canvas>
+  </div>
+  <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)" aria-label="Sonraki">›</button>
+</div>
+<div class="gauge-dots" id="gaugeDots" style="display:none;"></div>
+
+<!-- CENTS -->
+<div class="cent-row">
+  <span class="cent-side">♭ FLAT</span>
+  <span class="cent-val" id="centVal">– ¢</span>
+  <span class="cent-side">SHARP ♯</span>
+</div>
+
+<!-- STRINGS -->
+<div id="stringsSection" style="display:none;">
+  <div class="strings-wrap">
+    <div class="strings-list" id="stringsList"></div>
+  </div>
+</div>
+<div class="tuning-row">
+  <button class="tuning-chip" id="tuningChip" onclick="openTuning()">▼ Chromatic</button>
+</div>
+
+<!-- A4 -->
+<div class="a4-row">
+  <button class="a4-btn" onclick="changeA4(-1)">−</button>
+  <span class="a4-label" id="a4Label">A4 = 440 Hz</span>
+  <button class="a4-btn" onclick="changeA4(1)">+</button>
+</div>
+
+<!-- MIC -->
+<div class="mic-row">
+  <span class="mic-lbl">MIC</span>
+  <div class="mic-track"><div class="mic-bar" id="micBar"></div></div>
+  <span class="mic-db" id="micDb">– dB</span>
+</div>
 
 <!-- TUNING MODAL -->
 <div class="modal-bg" id="tuningModal" onclick="closeTuning(event)">
@@ -564,93 +575,62 @@ function tick() {
   if (pct < 35) rgb = lerpColor(cyan, green, pct / 35);
   else if (pct < 65) rgb = lerpColor(green, amber, (pct - 35) / 30);
   else rgb = lerpColor(amber, red, Math.min(1, (pct - 65) / 35));
-
-  const updateMic = (pid) => {
-    const p = document.getElementById(pid);
-    if (!p) return;
-    const mb = p.querySelector('.mic-bar');
-    if (mb) {
-      mb.style.width = pct + '%';
-      mb.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
-    }
-    const md = p.querySelector('.mic-db');
-    if (md) md.textContent = db > -60 ? db.toFixed(1)+' dB' : '–∞ dB';
-  };
-
-  const carousel = document.getElementById('themeCarousel');
-  const scrollLeft = carousel.scrollLeft;
-  const W = window.innerWidth;
-  updateMic('page-curr');
-  // Update all visible mics
-  GAUGES.forEach((_, i) => {
-    const offset = i * W;
-    if (Math.abs(offset - scrollLeft) < W * 1.2) {
-      updateMic(`page-${i}`);
-    }
-  });
+  micBar.style.backgroundColor = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+  document.getElementById('micDb').textContent = db > -60 ? db.toFixed(1)+' dB' : '–∞ dB';
 
   if (level < 0.008) {
     pitchData = null; microData = null; closestStr = manualStr;
     needleCents += (0 - needleCents) * 0.1;
-  } else {
-    const rawFreq = yin(timeBuf, audioCtx.sampleRate);
-    const freq = rawFreq > 20 && rawFreq < 5000 ? smoothFreq(rawFreq) : -1;
-
-    if (freq > 20 && freq < 5000) {
-      if (mode === 'microtonal') {
-        microData = microtonalDetect(freq);
-        pitchData = null; closestStr = null;
-        const dev = microData?.deviation ?? 0;
-        needleCents += (Math.max(-50, Math.min(50, dev*4)) - needleCents) * 0.12;
-      } else if (mode === 'chromatic') {
-        pitchData = freqToData(freq, null);
-        microData = null; closestStr = null;
-        needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
-      } else {
-        const autoStr = findClosest(freq);
-        closestStr = manualStr !== null ? manualStr : autoStr;
-        const tf = noteToFreq(tuning.notes[closestStr]);
-        pitchData = freqToData(freq, tf);
-        microData = null;
-        needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
-      }
-    } else {
-      pitchData = null; microData = null;
-      closestStr = mode === 'standard' && manualStr !== null ? manualStr : null;
-      needleCents += (0 - needleCents) * 0.08;
-    }
+    updateUI(); drawGauge(); return;
   }
 
-  GAUGES.forEach((_, i) => {
-    const offset = i * W;
-    if (Math.abs(offset - scrollLeft) < W * 1.2) {
-      updateUI(`page-${i}`);
-    }
-  });
+  const rawFreq = yin(timeBuf, audioCtx.sampleRate);
+  const freq = rawFreq > 20 && rawFreq < 5000 ? smoothFreq(rawFreq) : -1;
 
-  drawAllVisible();
+  if (freq > 20 && freq < 5000) {
+    if (mode === 'microtonal') {
+      microData = microtonalDetect(freq);
+      pitchData = null; closestStr = null;
+      const dev = microData?.deviation ?? 0;
+      needleCents += (Math.max(-50, Math.min(50, dev*4)) - needleCents) * 0.12;
+    } else if (mode === 'chromatic') {
+      pitchData = freqToData(freq, null);
+      microData = null; closestStr = null;
+      needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
+    } else {
+      const autoStr = findClosest(freq);
+      closestStr = manualStr !== null ? manualStr : autoStr;
+      const tf = noteToFreq(tuning.notes[closestStr]);
+      pitchData = freqToData(freq, tf);
+      microData = null;
+      needleCents += ((pitchData?.cents ?? 0) - needleCents) * 0.12;
+    }
+  } else {
+    pitchData = null; microData = null;
+    closestStr = mode === 'standard' && manualStr !== null ? manualStr : null;
+    needleCents += (0 - needleCents) * 0.08;
+  }
+
+  updateUI(); drawGauge();
 }
 
 // ===== UI =====
-function updateUI(pageId = 'page-curr') {
-  const page = document.getElementById(pageId);
-  if (!page) return;
-
+function updateUI() {
   if (mode === 'microtonal') {
     const md = microData;
-    const card = page.querySelector('.micro-card');
+    const card = document.getElementById('microCard');
     card.className = 'micro-card show' + (md?.inTune ? ' in-tune' : '');
-    page.querySelector('.micro-note').textContent = md?.note ?? '–';
-    page.querySelector('.micro-perde').textContent = md ? md.perdeAdı + ' (' + md.komaKodu + ')' : 'Perde bekleniyor';
-    page.querySelector('.micro-koma').innerHTML = md ? md.koma+'<sub>koma</sub>' : '–<sub>koma</sub>';
-    page.querySelector('.micro-freq').textContent = md ? md.frequency.toFixed(2)+' Hz' : '– Hz';
+    document.getElementById('microNote').textContent = md?.note ?? '–';
+    document.getElementById('microPerde').textContent = md ? md.perdeAdı + ' (' + md.komaKodu + ')' : 'Perde bekleniyor';
+    document.getElementById('microKoma').innerHTML = md ? md.koma+'<sub>koma</sub>' : '–<sub>koma</sub>';
+    document.getElementById('microFreq').textContent = md ? md.frequency.toFixed(2)+' Hz' : '– Hz';
     const dev = md?.deviation ?? null;
-    const devEl = page.querySelector('.micro-dev');
+    const devEl = document.getElementById('microDev');
     devEl.textContent = dev !== null ? (dev >= 0 ? '+' : '')+dev+' ¢' : '– ¢';
     devEl.style.color = md?.inTune ? 'var(--accent)' : 'var(--text2)';
 
     // Cent göstergesi
-    const centEl = page.querySelector('.cent-val');
+    const centEl = document.getElementById('centVal');
     centEl.textContent = dev !== null ? (dev >= 0 ? '+' : '')+dev+' ¢' : '– ¢';
     centEl.className = 'cent-val' + (md?.inTune ? ' in-tune' : '');
     return;
@@ -658,38 +638,29 @@ function updateUI(pageId = 'page-curr') {
 
   // Standard / Chromatic
   const inTune = pitchData?.inTune ?? false;
-  page.querySelector('.note-card').className = 'note-card' + (inTune ? ' in-tune' : '');
-  page.querySelector('.note-letter').textContent = pitchData?.note ?? '–';
-  page.querySelector('.note-octave').textContent = pitchData?.octave ?? '';
-  page.querySelector('.note-freq').textContent = pitchData ? pitchData.frequency.toFixed(2)+' Hz' : '– Hz';
+  document.getElementById('noteCard').className = 'note-card' + (inTune ? ' in-tune' : '');
+  document.getElementById('noteLetter').textContent = pitchData?.note ?? '–';
+  document.getElementById('noteOctave').textContent = pitchData?.octave ?? '';
+  document.getElementById('noteFreq').textContent = pitchData ? pitchData.frequency.toFixed(2)+' Hz' : '– Hz';
 
   const c = pitchData?.cents ?? null;
-  const cv = page.querySelector('.cent-val');
+  const cv = document.getElementById('centVal');
   cv.textContent = c !== null ? (c >= 0 ? '+' : '')+c+' ¢' : '– ¢';
   cv.className = 'cent-val' + (inTune ? ' in-tune' : '');
 
-  const tEl = page.querySelector('.target-note');
+  const tEl = document.getElementById('targetNote');
   if (mode === 'standard' && closestStr !== null) {
     const tn = tuning.notes[closestStr];
     tEl.innerHTML = 'Hedef: <span>'+tn+'</span> · '+noteToFreq(tn).toFixed(1)+' Hz';
   } else { tEl.innerHTML = ''; }
 
-  const mb = page.querySelector('.manual-badge');
-  if (mb) mb.className = 'manual-badge'+(manualStr!==null&&mode==='standard'?' show':'');
+  document.getElementById('manualBadge').className = 'manual-badge'+(manualStr!==null&&mode==='standard'?' show':'');
 
-  // Bottom UI
-  const tc = page.querySelector('.tuning-chip');
-  if (tc) tc.textContent = '▼ ' + (mode === 'chromatic' ? 'Chromatic' : tuning.name);
-  
-  const a4l = page.querySelector('.a4-label');
-  if (a4l) a4l.textContent = 'A4 = ' + a4 + ' Hz';
-
-  const ss = page.querySelector('.strings-section');
-  if (ss) ss.style.display = mode === 'standard' ? '' : 'none';
-
-  if (mode === 'standard') {
-    renderStrings(pageId);
-  }
+  document.querySelectorAll('.string-item').forEach((el,i) => {
+    const isActive = i === closestStr && mode === 'standard';
+    const isInTune = isActive && pitchData?.inTune;
+    el.className = 'string-item' + (isActive ? ' active' : '') + (isInTune ? ' in-tune' : '');
+  });
 }
 
 // ===== GAUGE — STİLLER =====
@@ -705,11 +676,10 @@ const GAUGES = [
 ];
 let currentGauge = 0;
 
-function getCanvasCtx(canvas) {
-  if (!canvas) return null;
+function getCanvasCtx() {
+  const canvas = document.getElementById('gaugeCanvas');
   const dpr = window.devicePixelRatio || 1;
   const W = canvas.offsetWidth, H = W * 0.58;
-  if (W === 0) return null;
   if (canvas.width !== W*dpr) { canvas.width = W*dpr; canvas.height = H*dpr; }
   const ctx = canvas.getContext('2d');
   ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -717,25 +687,29 @@ function getCanvasCtx(canvas) {
   return { canvas, ctx, W, H };
 }
 
-function drawGauge(gaugeIdx, canvasEl) {
-  if (!canvasEl) return;
-  const style = GAUGES[gaugeIdx].id;
-  const res = getCanvasCtx(canvasEl);
-  if (!res) return;
-  const { ctx, W, H } = res;
+function drawGauge() {
+  const style = GAUGES[currentGauge].id;
+  // Tema body class'ı uygula
+  const themeIds = ['komur','krem','morNeon','orman'];
+  document.body.className = document.body.className
+    .split(' ').filter(c => !c.startsWith('theme-')).join(' ').trim();
+  if (themeIds.includes(style)) {
+    document.body.classList.add('theme-' + style);
+  }
 
-  if (style === 'klasik') drawKlasik(ctx, W, H);
-  else if (style === 'klasikBuyuk') drawKlasikBuyuk(ctx, W, H);
-  else if (style === 'komur') drawKlasikTema('komur', ctx, W, H);
-  else if (style === 'krem') drawKlasikTema('krem', ctx, W, H);
-  else if (style === 'morNeon') drawKlasikTema('morNeon', ctx, W, H);
-  else if (style === 'orman') drawKlasikTema('orman', ctx, W, H);
-  else if (style === 'minimal') drawMinimal(ctx, W, H);
-  else if (style === 'led') drawLED(ctx, W, H);
+  if (style === 'klasik') drawKlasik();
+  else if (style === 'klasikBuyuk') drawKlasikBuyuk();
+  else if (style === 'komur') drawKlasikTema('komur');
+  else if (style === 'krem') drawKlasikTema('krem');
+  else if (style === 'morNeon') drawKlasikTema('morNeon');
+  else if (style === 'orman') drawKlasikTema('orman');
+  else if (style === 'minimal') drawMinimal();
+  else if (style === 'led') drawLED();
 }
 
 // 1. KLASİK — yarım daire gauge (orijinal)
-function drawKlasik(ctx, W, H) {
+function drawKlasik() {
+  const { ctx, W, H } = getCanvasCtx();
   const cx = W/2, cy = H-14, R = Math.min(W*.46,H*.9);
 
   ctx.beginPath(); ctx.arc(cx,cy,R,Math.PI,2*Math.PI);
@@ -776,7 +750,8 @@ function drawKlasik(ctx, W, H) {
 }
 
 // 1B. KLASİK BÜYÜK — okunaklı versiyon: kalın çizgiler, büyük rakamlar, yüksek kontrast
-function drawKlasikBuyuk(ctx, W, H) {
+function drawKlasikBuyuk() {
+  const { ctx, W, H } = getCanvasCtx();
   const cx = W/2, cy = H-14, R = Math.min(W*.46, H*.9);
   const inTune = pitchData?.inTune || microData?.inTune || false;
 
@@ -838,7 +813,7 @@ function drawKlasikBuyuk(ctx, W, H) {
 }
 
 // KLASİK + TEMA — orijinal yarım daire, farklı renk paletlerinde
-function drawKlasikTema(temaId, ctx, W, H) {
+function drawKlasikTema(temaId) {
   const themes = {
     komur: {
       bg: null, // canvas zemini saf siyah; body zemini değişmez ama canvas dolduralım
@@ -890,7 +865,7 @@ function drawKlasikTema(temaId, ctx, W, H) {
     },
   };
   const tema = themes[temaId];
-  const cx = W/2, cy = H-14, R = Math.min(W*.46, H*.9);
+  const { ctx, W, H } = getCanvasCtx();
 
   // Tema arka planı
   if (tema.bg) {
@@ -945,7 +920,8 @@ function drawKlasikTema(temaId, ctx, W, H) {
 }
 
 // 2. MİNİMALİST — yatay ince çizgi, kayan ibre
-function drawMinimal(ctx, W, H) {
+function drawMinimal() {
+  const { ctx, W, H } = getCanvasCtx();
   const cy = H/2;
   const padX = 30;
   const lineW = W - padX*2;
@@ -993,7 +969,8 @@ function drawMinimal(ctx, W, H) {
 }
 
 // 3. DİJİTAL LED — strob şerit, soldan-sağa LED'ler
-function drawLED(ctx, W, H) {
+function drawLED() {
+  const { ctx, W, H } = getCanvasCtx();
   const cy = H/2;
   const padX = 24;
   const ledCount = 21; // -50..+50, her 5 cent
@@ -1051,96 +1028,12 @@ function drawLED(ctx, W, H) {
   });
 }
 
-function updateCarouselBuffer() {
-  GAUGES.forEach((_, i) => updateUI(`page-${i}`));
-}
-
-// ===== CAROUSEL LOGIC (Native Scroll) =====
-function initCarousel() {
-  const container = document.getElementById('themeCarousel');
-  const template = `
-    <div class="note-card">
-      <div class="note-display">
-        <div class="note-letter">–</div>
-        <div class="note-octave"></div>
-      </div>
-      <div class="note-info">
-        <div class="note-freq">– Hz</div>
-        <div class="target-note"></div>
-        <div class="manual-badge">● MANUAL</div>
-        <div class="in-tune-badge">✓ IN TUNE</div>
-      </div>
-    </div>
-    <div class="micro-card">
-      <div class="micro-left"><div class="micro-note">–</div><div class="micro-perde">Perde bekleniyor</div></div>
-      <div class="micro-right">
-        <div class="micro-koma">–<sub>koma</sub></div>
-        <div class="micro-freq">– Hz</div>
-        <div class="micro-dev">– ¢</div>
-        <div class="micro-intune">✓ DOĞRU MIKROTONA</div>
-      </div>
-    </div>
-    <div class="gauge-section">
-      <button class="gauge-arrow gauge-arrow-left" onclick="changeGauge(-1)">‹</button>
-      <div class="gauge-wrap"><canvas class="gauge-canvas"></canvas></div>
-      <button class="gauge-arrow gauge-arrow-right" onclick="changeGauge(1)">›</button>
-    </div>
-    <div class="cent-row">
-      <span class="cent-side">♭ FLAT</span><span class="cent-val">– ¢</span><span class="cent-side">SHARP ♯</span>
-    </div>
-    <div class="strings-section" style="display:none;">
-      <div class="strings-wrap"><div class="strings-list"></div></div>
-    </div>
-    <div class="tuning-row"><button class="tuning-chip" onclick="openTuning()">▼ Chromatic</button></div>
-    <div class="a4-row">
-      <button class="a4-btn" onclick="changeA4(-1)">−</button><span class="a4-label">A4 = 440 Hz</span><button class="a4-btn" onclick="changeA4(1)">+</button>
-    </div>
-    <div class="mic-row">
-      <span class="mic-lbl">MIC</span><div class="mic-track"><div class="mic-bar"></div></div><span class="mic-db">– dB</span>
-    </div>
-  `;
-
-  container.innerHTML = GAUGES.map((g, i) => `
-    <div id="page-${i}" class="theme-page theme-${g.id}">
-      ${template}
-    </div>
-  `).join('');
-
-  container.addEventListener('scroll', () => {
-    const idx = Math.round(container.scrollLeft / window.innerWidth);
-    if (idx !== currentGauge) {
-      currentGauge = idx;
-      renderGaugeDots();
-    }
-  });
-
-  // Initial draw and UI
-  GAUGES.forEach((_, i) => updateUI(`page-${i}`));
-  drawAllVisible();
-}
-
-function drawAllVisible() {
-  const carousel = document.getElementById('themeCarousel');
-  if (!carousel) return;
-  const scrollLeft = carousel.scrollLeft;
-  const W = window.innerWidth;
-
-  GAUGES.forEach((_, i) => {
-    const page = document.getElementById(`page-${i}`);
-    if (!page) return;
-    const canvas = page.querySelector('.gauge-canvas');
-    const offset = i * W;
-    // Görünür veya yakınsa çiz
-    if (Math.abs(offset - scrollLeft) < W * 1.5) {
-      drawGauge(i, canvas);
-    }
-  });
-}
-
+// ===== ARAYÜZ KAYDIRMA =====
 function changeGauge(dir) {
   const n = GAUGES.length;
-  const next = (currentGauge + dir + n) % n;
-  goToGauge(next);
+  currentGauge = (currentGauge + dir + n) % n;
+  renderGaugeDots();
+  drawGauge();
 }
 
 function renderGaugeDots() {
@@ -1150,32 +1043,50 @@ function renderGaugeDots() {
 }
 
 function goToGauge(i) {
-  const container = document.getElementById('themeCarousel');
-  container.scrollTo({ left: i * window.innerWidth, behavior: 'smooth' });
+  currentGauge = i;
+  renderGaugeDots();
+  drawGauge();
 }
 
-// ===== TELLER =====
-function renderStrings(pageId = 'page-curr') {
-  const p = document.getElementById(pageId);
-  if (!p) return;
-  const list = p.querySelector('.strings-list');
-  if (!list) return;
+// Klavye okları
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') changeGauge(-1);
+  else if (e.key === 'ArrowRight') changeGauge(1);
+});
 
-  list.innerHTML = tuning.notes.map((n,i) => {
-    const isActive = i === closestStr && mode === 'standard';
-    const isInTune = isActive && pitchData?.inTune;
-    return `
-      <div class="string-item ${isActive?'active':''} ${isInTune?'in-tune':''}" onclick="selectString(${i})">
-        <div class="string-line"></div>
-        <div class="string-note">${n}</div>
-        <div class="string-dot"></div>
-      </div>`;
-  }).join('');
+// Touch swipe
+(() => {
+  const wrap = document.getElementById('gaugeWrap');
+  let startX = 0, startY = 0, tracking = false;
+  wrap.addEventListener('touchstart', e => {
+    if (e.touches.length !== 1) return;
+    startX = e.touches[0].clientX; startY = e.touches[0].clientY;
+    tracking = true;
+  }, {passive:true});
+  wrap.addEventListener('touchend', e => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = (e.changedTouches[0].clientX - startX);
+    const dy = (e.changedTouches[0].clientY - startY);
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)*1.5) {
+      changeGauge(dx < 0 ? 1 : -1);
+    }
+  }, {passive:true});
+})();
+
+// ===== TELLER =====
+function renderStrings() {
+  document.getElementById('stringsList').innerHTML = tuning.notes.map((n,i) => `
+    <div class="string-item" onclick="selectString(${i})">
+      <div class="string-line"></div>
+      <div class="string-note">${n}</div>
+      <div class="string-dot"></div>
+    </div>`).join('');
 }
 function selectString(i) {
   manualStr = manualStr === i ? null : i;
   if (manualStr !== null) closestStr = i;
-  updateUI('page-curr');
+  updateUI();
 }
 
 // ===== A4 =====
@@ -1313,7 +1224,7 @@ function selectChromatic() {
   document.getElementById('stringsSection').style.display = 'none';
   document.getElementById('tuningChip').textContent = '▼ Chromatic';
   document.getElementById('tuningModal').classList.remove('open');
-  updateCarouselBuffer();
+  updateUI(); drawGauge();
 }
 
 function selectTuning(i) {
@@ -1326,52 +1237,15 @@ function selectTuning(i) {
     pitchData = null; microData = null;
   }
   renderStrings();
-  updateCarouselBuffer();
+  updateUI(); drawGauge();
 }
 
 // ===== BAŞLAT =====
-initCarousel();
+renderStrings();
+renderGaugeDots();
+drawGauge();
 startAudio();
-window.addEventListener('resize', () => {
-  drawAllVisible();
-});
-window.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft') changeGauge(-1);
-  else if (e.key === 'ArrowRight') changeGauge(1);
-});
-
-    // Register Service Worker for PWA
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker registered'))
-          .catch(err => console.log('Service Worker registration failed:', err));
-      });
-    }
-
-    // Install Button Logic
-    let deferredPrompt;
-    const installBtn = document.getElementById('installBtn');
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      installBtn.style.display = 'flex';
-    });
-    installBtn.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-          deferredPrompt = null;
-          installBtn.style.display = 'none';
-        }
-      }
-    });
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      installBtn.style.display = 'none';
-      console.log('App installed');
-    });
-    </script>
+window.addEventListener('resize', drawGauge);
+</script>
 </body>
 </html>
